@@ -3,23 +3,25 @@ package com.conor.FantasyMap.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SqlResultSetMapping;
+import javax.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueCoords", columnNames = {"xCoord", "yCoord"})})
 public class Location {
     @Getter
     @Setter
+    @Column(unique=true)
     private String name;
     @Getter
     private String info;
     @Getter
     @Setter
+    @Column
     private Integer xCoord;
     @Getter
     @Setter
+    @Column
     private Integer yCoord;
     @Id
     @GeneratedValue
