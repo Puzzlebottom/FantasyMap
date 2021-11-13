@@ -30,6 +30,15 @@ public class LocationController {
         return locationRepository.findLocationByName(name);
     }
 
+    @GetMapping("/course")
+    public String getCourse(@RequestParam String originName, @RequestParam String destinationName) {
+        Location origin = locationRepository.findLocationByName(originName);
+        Location destination = locationRepository.findLocationByName(destinationName);
+        Integer distance = origin.calculateDistanceTo(destination);
+        String direction = origin.calculateBearingTo(destination);
+        return destinationName + " is " + distance + " miles " + direction + " from " + originName;
+    }
+
     @PostMapping("/locations")
     public ResponseEntity<Object> addLocation(@RequestBody Location location) {
         locationRepository.save(location);
