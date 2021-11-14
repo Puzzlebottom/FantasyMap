@@ -29,6 +29,12 @@ public class LocationController {
         return locationRepository.findLocationByName(name);
     }
 
+    @GetMapping("/locations/info")
+    public List<String> getLocationInfo(@RequestParam String name) {
+        Location location = locationRepository.findLocationByName(name);
+        return location.getInfo();
+    }
+
     @GetMapping("/course")
     public String getCourse(@RequestParam String originName, @RequestParam String destinationName) {
         Location origin = locationRepository.findLocationByName(originName);
@@ -49,6 +55,15 @@ public class LocationController {
         Location originLocation = locationRepository.findLocationByName(origin);
         targetLocation.setCoordsFromOriginByVector(originLocation, direction, distance);
         locationRepository.save(targetLocation);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/locations/info")
+    public ResponseEntity<Object> addLocationInfo(@RequestParam String targetLocation, @RequestBody String info) {
+        Location location = locationRepository.findLocationByName(targetLocation);
+        List<String> retrievedInfo = location.getInfo();
+        retrievedInfo.add(info);
+        locationRepository.save(location);
         return ResponseEntity.ok().build();
     }
 

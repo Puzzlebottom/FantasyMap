@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -14,7 +13,8 @@ import java.util.List;
 public class Location {
     @Column(unique=true)
     private String name;
-    private String info;
+    @ElementCollection
+    private List<String> info;
     private Integer xCoord;
     private Integer yCoord;
     @Id
