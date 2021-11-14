@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -52,5 +51,6 @@ public class LocationController {
         locationRepository.save(targetLocation);
         return ResponseEntity.ok().build();
     }
+
 }
 

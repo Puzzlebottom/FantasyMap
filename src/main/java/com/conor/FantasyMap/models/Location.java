@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -29,10 +33,8 @@ public class Location {
     private Long id;
 
     public void setCoordsFromOriginByVector(Location origin, String direction, Integer distance) {
-        Integer originX = origin.xCoord;
-        Integer originY = origin.yCoord;
-        Integer x = originX;
-        Integer y = originY;
+        Integer x = origin.getXCoord();
+        Integer y = origin.getYCoord();
         switch (direction) {
             case "N" -> y += distance;
             case "NE" -> {
@@ -64,26 +66,17 @@ public class Location {
         int x2 = destination.getXCoord();
         int y1 = this.getYCoord();
         int y2 = destination.getYCoord();
-        double angle = Math.toDegrees(Math.atan2(x2 - x1, y2 - y1));
-        if(angle < 0){
+
+        int angle = (int) Math.toDegrees(Math.atan2(x2 - x1, y2 - y1));
+        if (angle < 0) {
             angle += 360;
         }
 
-        if ((int) angle >= 22.5 && angle < 67.5) {
-            return "NE";
-        } else if ((int) angle >= 67.5 && angle < 112.5) {
-            return "E";
-        } else if ((int) angle >= 112.5 && angle < 157.5) {
-            return "SE";
-        } else if ((int) angle >= 157.5 && angle < 202.5) {
-            return "S";
-        } else if ((int) angle >= 202.5 && angle < 247.5) {
-            return "SW";
-        } else if ((int) angle >= 247.5 && angle < 292.5) {
-            return "W";
-        } else if ((int) angle >= 292.5 && angle < 337.5) {
-            return "NW";
-        } else return "N";
+        Integer[] cardinalBreakpoints = new Integer[] {0, 45, 90, 135, 180, 225, 270, 315, 360};
+        String[] cardinalValues = new String[] {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+        int finalAngle = angle;
+        int index = Arrays.stream(cardinalBreakpoints).filter(i -> finalAngle > (i - 22.5)).toArray().length - 1;
+        return cardinalValues[index];
     }
 
     public Integer calculateDistanceTo(Location destination) {
@@ -91,7 +84,6 @@ public class Location {
         Integer x2 = destination.getXCoord();
         Integer y1 = this.getYCoord();
         Integer y2 = destination.getYCoord();
-        long distance = Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 -y1)));
-        return (int) distance;
+        return (int) Math.round(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 -y1)));
     }
 }
