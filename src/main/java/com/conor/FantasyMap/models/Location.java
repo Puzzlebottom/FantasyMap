@@ -5,31 +5,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(name = "UniqueCoords", columnNames = {"xCoord", "yCoord"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueCoords", columnNames = {"xCoord", "yCoord"})})
+@Getter
+@Setter
 public class Location {
-    @Getter
-    @Setter
     @Column(unique=true)
     private String name;
-    @Getter
     private String info;
-    @Getter
-    @Setter
-    @Column
     private Integer xCoord;
-    @Getter
-    @Setter
-    @Column
     private Integer yCoord;
     @Id
     @GeneratedValue
-    @Getter
     private Long id;
 
     public void setCoordsFromOriginByVector(Location origin, String direction, Integer distance) {
@@ -63,8 +51,8 @@ public class Location {
 
     public String calculateBearingTo(Location destination) {
         int x1 = this.getXCoord();
-        int x2 = destination.getXCoord();
         int y1 = this.getYCoord();
+        int x2 = destination.getXCoord();
         int y2 = destination.getYCoord();
 
         int angle = (int) Math.toDegrees(Math.atan2(x2 - x1, y2 - y1));
@@ -74,8 +62,9 @@ public class Location {
 
         Integer[] cardinalBreakpoints = new Integer[] {0, 45, 90, 135, 180, 225, 270, 315, 360};
         String[] cardinalValues = new String[] {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+        int cardinalOffset = (360/Arrays.stream(cardinalValues).distinct().toArray().length)/2;
         int finalAngle = angle;
-        int index = Arrays.stream(cardinalBreakpoints).filter(i -> finalAngle > (i - 22.5)).toArray().length - 1;
+        int index = Arrays.stream(cardinalBreakpoints).filter(i -> finalAngle > (i - cardinalOffset)).toArray().length - 1;
         return cardinalValues[index];
     }
 
