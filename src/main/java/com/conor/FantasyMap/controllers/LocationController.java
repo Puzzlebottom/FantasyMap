@@ -29,6 +29,12 @@ public class LocationController {
         return locationRepository.findLocationByName(name);
     }
 
+    @GetMapping("/locations/delete")
+    public ResponseEntity<Object> deleteLocation(@RequestParam String name) {
+        locationRepository.deleteLocationByName(name);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/locations/info")
     public List<String> getLocationInfo(@RequestParam String name) {
         Location location = locationRepository.findLocationByName(name);
