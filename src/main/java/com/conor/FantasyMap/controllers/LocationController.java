@@ -61,11 +61,9 @@ public class LocationController {
     @PostMapping("/locations/info")
     public ResponseEntity<Object> addLocationInfo(@RequestParam String targetLocation, @RequestBody String info) {
         Location location = locationRepository.findLocationByName(targetLocation);
-        List<String> retrievedInfo = location.getInfo();
-        retrievedInfo.add(info);
+        location.updateInfo(info);
         locationRepository.save(location);
         return ResponseEntity.ok().build();
     }
-
 }
 
