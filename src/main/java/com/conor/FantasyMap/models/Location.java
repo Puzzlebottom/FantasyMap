@@ -1,12 +1,15 @@
 package com.conor.FantasyMap.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Math.*;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.concat;
 
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueCoords", columnNames = {"xCoord", "yCoord"})})
@@ -23,9 +26,9 @@ public class Location {
     @GeneratedValue
     private Long id;
 
-    private static List<Integer> cardinalDegrees = List.of(0, 45, 90, 135, 180, 225, 270, 315, 360);
-    private static List<String> cardinalValues = List.of("N", "NE", "E", "SE", "S", "SW", "W", "NW", "N");
-    private static int cardinalOffset = (360/cardinalValues.stream().distinct().toArray().length)/2;
+    private static final List<Integer> cardinalDegrees = List.of(0, 45, 90, 135, 180, 225, 270, 315, 360);
+    private static final List<String> cardinalValues = List.of("N", "NE", "E", "SE", "S", "SW", "W", "NW", "N");
+    private static final int cardinalOffset = (360/cardinalValues.stream().distinct().toArray().length)/2;
 
     public void setCoordsFromOriginByVector(Location origin, String direction, Integer distance) {
         int index = cardinalValues.indexOf(direction);
@@ -54,7 +57,7 @@ public class Location {
 
     public void updateInfo(String newInfo) {
         List<String> info = this.getInfo();
-        info.add(newInfo);
-        this.setInfo(info);
+        List<String> newList = concat(info.stream(), Stream.of(newInfo)).collect(toList());
+        this.setInfo(newList);
     }
 }

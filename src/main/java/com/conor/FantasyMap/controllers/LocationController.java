@@ -10,11 +10,8 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-//TODO: Create Git repo, push to github
-//TODO: Create new endpoint that adds a location relative to another location
-//TODO: Create new endpoint that gets heading and distance between two locations
-//TODO: Create new endpoint that gets location by name
-//TODO: STRETCH GOAL Search Baeldung for how to implement validation for name uniqueness
+
+//TODO: Make endpoints Restful;
 
 public class LocationController {
     private final LocationRepository locationRepository;
@@ -29,16 +26,16 @@ public class LocationController {
         return locationRepository.findLocationByName(name);
     }
 
-    @GetMapping("/locations/delete")
-    public ResponseEntity<Object> deleteLocation(@RequestParam String name) {
-        locationRepository.deleteLocationByName(name);
-        return ResponseEntity.ok().build();
-    }
-
     @GetMapping("/locations/info")
     public List<String> getLocationInfo(@RequestParam String name) {
         Location location = locationRepository.findLocationByName(name);
         return location.getInfo();
+    }
+
+    @DeleteMapping("/locations/delete")
+    public ResponseEntity<Object> deleteLocation(@RequestParam String name) {
+        locationRepository.deleteLocationByName(name);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/course")
