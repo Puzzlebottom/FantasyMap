@@ -33,8 +33,8 @@ public class Location {
     public void setCoordsFromOriginByVector(Location origin, String direction, Integer distance) {
         int index = cardinalValues.indexOf(direction);
         double angle = toRadians(cardinalDegrees.get(index));
-        int x = (int) round(origin.getXCoord() + distance * cos(angle));
-        int y = (int) round(origin.getYCoord() + distance * sin(angle));
+        int x = (int) round(origin.getXCoord() + distance * sin(angle));
+        int y = (int) round(origin.getYCoord() + distance * cos(angle));
         this.setXCoord(x);
         this.setYCoord(y);
     }
@@ -42,7 +42,7 @@ public class Location {
     public String calculateBearingTo(Location destination) {
         int deltaX = destination.getXCoord() - this.getXCoord();
         int deltaY = destination.getYCoord() - this.getYCoord();
-        int angle = (int) toDegrees(atan2(deltaY, deltaX));
+        int angle = (int) toDegrees(atan2(deltaX, deltaY));
         if (angle < 0) {angle += 360;}
         int bearing = angle;
         int index = cardinalDegrees.stream().filter(i -> bearing > (i - cardinalOffset)).toArray().length - 1;
