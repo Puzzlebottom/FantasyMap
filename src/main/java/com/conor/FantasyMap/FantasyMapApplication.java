@@ -1,5 +1,6 @@
 package com.conor.FantasyMap;
 
+import com.conor.FantasyMap.services.MapService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FantasyMapApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(FantasyMapApplication.class, args);
 	}
 
