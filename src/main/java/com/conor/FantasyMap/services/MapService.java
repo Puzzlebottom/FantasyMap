@@ -1,12 +1,16 @@
 package com.conor.FantasyMap.services;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.NamedPoint;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,8 +28,20 @@ public class MapService {
 
     }
 
-    Map generateMap() {
-        Map map = new Map();
-        return map;
+    List<NamedPoint> getScaledMap(int width, int height) {
+        List<Location> locations = locationRepository.findAll();
+        return locations.stream()
+                .map(this::getNamedPoint)
+                .map(point -> point.setCoords(width/2, height/2))
+                .collect(Collectors.toList());
     }
+
+    private NamedPoint getNamedPoint(Location location) {
+        return NamedPoint.builder()
+                .name(location.getName())
+                .xCoord(location.getXCoord())
+                .yCoord(location.getYCoord())
+                .build();
+    }
+
 }
