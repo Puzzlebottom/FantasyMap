@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
     <circle th:fragment="marker" th:each="location: ${locations}" th:attr="cx=${location.xCoord}, cy=${location.yCoord}" r="5" fill="red"></circle>
-    <text th:fragment="marker" th:each="location: ${locations}" th:text="${location.name}" th:attr="x=${location.xCoord}, y=${location.yCoord}"></text>
+    <text text-anchor="middle" th:fragment="marker" th:each="location: ${locations}" th:text="${location.name}" th:attr="x=${location.xCoord}, y=${location.yCoord} + 20"></text>
 </body>
 </html>
 <!--<svg-->

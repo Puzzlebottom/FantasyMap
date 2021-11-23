@@ -26,15 +26,14 @@ public class LocationControllerIntegrationTest {
         Location location = new Location();
         location.setName("Bastion");
 
-        restTemplate.postForObject(baseUri + "/locations", location, Object.class);
+        restTemplate.postForObject(baseUri + "/stored-locations", location, Object.class);
 
-        restTemplate.postForObject(baseUri + "/locations/info?targetLocation=Bastion",
+        restTemplate.postForObject(baseUri + "/stored-locations/location/info?targetLocation=Bastion",
                 "banana",
                 String.class);
 
-        List result = restTemplate.getForObject(baseUri + "/locations/info?name=Bastion",
+        List result = restTemplate.getForObject(baseUri + "/stored-locations/location/info?name=Bastion",
                 List.class);
-
 
         assertThat(result).contains("banana");
     }

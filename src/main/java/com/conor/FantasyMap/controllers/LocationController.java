@@ -18,7 +18,6 @@ public class LocationController {
 
     @GetMapping("/")
     public String map(Model model) {
-//        List<Location> locations = new MapService().mapLocations();
         List<Location> locations = locationRepository.findAll();
         model.addAttribute("locations", locations);
         return "map";
