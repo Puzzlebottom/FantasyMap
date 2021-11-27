@@ -1,7 +1,6 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
-import com.conor.FantasyMap.repositories.LocationRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

@@ -2,7 +2,6 @@ package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.repositories.LocationRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

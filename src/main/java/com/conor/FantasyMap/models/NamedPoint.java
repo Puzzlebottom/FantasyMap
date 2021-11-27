@@ -16,7 +16,7 @@ public class NamedPoint {
 
     public NamedPoint setCoords(int x, int y) {
         this.setXCoord(x);
-        this.setYCoord(y);
+        this.setYCoord(-y);
         return this;
     }
 }

@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.NamedPoint;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.services.MapService;
 import lombok.AllArgsConstructor;
@@ -15,11 +16,15 @@ import java.util.List;
 @AllArgsConstructor
 public class LocationController {
     private final LocationRepository locationRepository;
+    private final MapService mapService;
 
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
-        model.addAttribute("locations", locations);
+        List<NamedPoint> points =  mapService.getScaledMap(locations);
+        model.addAttribute("points", points);
+        model.addAttribute("width", mapService.width);
+        model.addAttribute("height", mapService.height);
         return "map";
     }
 
