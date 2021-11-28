@@ -3,14 +3,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
     <circle th:fragment="marker"
-            th:each="point: ${points}"
+            th:each="point: ${map.points}"
             th:attr="cx=${point.xCoord}, cy=${point.yCoord}"
             r="5"
             fill="red">
     </circle>
     <text text-anchor="middle"
           th:fragment="marker"
-          th:each="point: ${points}"
+          th:each="point: ${map.points}"
           th:text="${point.name}"
           th:attr="x=${point.xCoord}, y=${point.yCoord} + 20">
     </text>

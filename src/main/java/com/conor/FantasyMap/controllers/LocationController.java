@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.Map;
 import com.conor.FantasyMap.models.NamedPoint;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.services.MapService;
@@ -21,10 +22,8 @@ public class LocationController {
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
-        List<NamedPoint> points =  mapService.getScaledMap(locations);
-        model.addAttribute("points", points);
-        model.addAttribute("width", mapService.width);
-        model.addAttribute("height", mapService.height);
+        Map map =  mapService.getScaledMap(locations);
+        model.addAttribute("map", map);
         return "map";
     }
 

@@ -13,6 +13,7 @@ public class NamedPoint {
     private String name;
     private int xCoord;
     private int yCoord;
+    private boolean isCentered = false;
 
     public NamedPoint setCoords(int x, int y) {
         this.setXCoord(x);

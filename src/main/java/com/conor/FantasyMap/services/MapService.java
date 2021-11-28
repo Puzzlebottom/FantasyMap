@@ -2,7 +2,7 @@ package com.conor.FantasyMap.services;
 
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.NamedPoint;
-import com.conor.FantasyMap.repositories.LocationRepository;
+import com.conor.FantasyMap.models.Map;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,24 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MapService {
-    public int width = 550;
-    public int height = 450;
+    private int mapWidth = 900;
+    private int mapHeight = 600;
+    private double mapScale = 0.5;
 
-    public List<NamedPoint> getScaledMap(List<Location> locations) {
-        return locations.stream()
+    public Map getScaledMap(List<Location> locations) {
+        List<NamedPoint> points = locations.stream()
                 .map(this::getNamedPoint)
                 .collect(Collectors.toList());
+        Map map = new Map(points, mapWidth, mapHeight, mapScale);
+        return map;
     }
 
     private NamedPoint getNamedPoint(Location location) {
         return NamedPoint.builder()
                 .name(location.getName())
-                .xCoord(width/2 + location.getXCoord())
-                .yCoord(height/2 - location.getYCoord())
+                .xCoord((int) ((mapWidth/2 + location.getXCoord()) * mapScale))
+                .yCoord((int) ((mapHeight/2 - location.getYCoord()) * mapScale))
+                .isCentered(location.isOrigin())
                 .build();
     }
 

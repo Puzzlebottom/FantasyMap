@@ -25,6 +25,7 @@ public class Location {
     @Id
     @GeneratedValue
     private Long id;
+    private boolean isOrigin = true;
 
     private static final List<Integer> cardinalDegrees = List.of(0, 45, 90, 135, 180, 225, 270, 315, 360);
     private static final List<String> cardinalValues = List.of("N", "NE", "E", "SE", "S", "SW", "W", "NW", "N");
@@ -37,6 +38,7 @@ public class Location {
         int y = (int) round(origin.getYCoord() + distance * cos(angle));
         this.setXCoord(x);
         this.setYCoord(y);
+        this.setOrigin(false);
     }
 
     public String calculateBearingTo(Location destination) {
