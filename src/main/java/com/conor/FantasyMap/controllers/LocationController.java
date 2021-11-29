@@ -2,7 +2,6 @@ package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.Map;
-import com.conor.FantasyMap.models.NamedPoint;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.services.MapService;
 import lombok.AllArgsConstructor;
