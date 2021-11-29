@@ -11,8 +11,8 @@ import java.util.List;
 @Setter
 public class Map {
     private List<NamedPoint> points;
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
     private double scale;
 
 }

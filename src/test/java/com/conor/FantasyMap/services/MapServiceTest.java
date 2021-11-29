@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.services;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.Map;
 import com.conor.FantasyMap.models.NamedPoint;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,17 +28,18 @@ class MapServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-//    @Test
-//    void getScaledMapShouldCenterASingleLocation() {
-//        Location location = new Location();
-//        location.setName("Bastion");
-//        location.setXCoord(300);
-//        location.setYCoord(150);
-//        when(locationRepository.findAll()).thenReturn(List.of(location));
-//
-//        List<NamedPoint> scaledMap = mapService.getScaledMap(500, 300);
-//
-//        assertThat(scaledMap.get(0).getXCoord()).isEqualTo(250);
-//        assertThat(scaledMap.get(0).getYCoord()).isEqualTo(150);
-//    }
+    @Test
+    void getScaledMapShouldCenterASingleLocation() {
+        Location location = new Location();
+        location.setName("Bastion");
+        location.setXCoord(10);
+        location.setYCoord(20);
+
+        Map scaledMap = mapService.getScaledMap(List.of(location));
+        scaledMap.setHeight(600);
+        scaledMap.setWidth(900);
+
+        assertThat(scaledMap.getPoints().get(0).getXCoord()).isEqualTo(450);
+        assertThat(scaledMap.getPoints().get(0).getYCoord()).isEqualTo(300);
+    }
 }
