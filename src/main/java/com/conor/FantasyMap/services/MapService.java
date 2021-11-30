@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,44 +17,39 @@ import static java.util.Collections.min;
 import static java.util.Comparator.comparing;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class MapService {
-    private int mapWidth = 900;
-    private int mapHeight = 600;
-    private int xOffset = 0;
-    private int yOffset = 0;
-    private double mapScale = 1;
+    private final int MAP_WIDTH = 900;
+    private final int MAP_HEIGHT = 600;
 
-    public Map getScaledMap(List<Location> locations) {
-        centerOnOrigin(locations);
-        scaleMap(locations);
+    public Map getMap(List<Location> locations) {
+        Point offset = centerOnOrigin(locations);
+        double scale = getMapScale(locations);
         List<NamedPoint> points = locations.stream()
-                .map(this::getNamedPoint)
+                .map(location -> getNamedPoint(location, offset, scale))
                 .collect(Collectors.toList());
-        return new Map(points, mapWidth, mapHeight, mapScale);
+        return new Map(points, MAP_WIDTH, MAP_HEIGHT, scale);
     }
 
-    private NamedPoint getNamedPoint(Location location) {
+    private NamedPoint getNamedPoint(Location location, Point offset, double scale) {
         return NamedPoint.builder()
                 .name(location.getName())
-                .xCoord((int) ((mapWidth/(2 * mapScale) + xOffset + location.getXCoord()) * mapScale))
-                .yCoord((int) ((mapHeight/(2 * mapScale) + yOffset - location.getYCoord()) * mapScale))
+                .xCoord((int) ((MAP_WIDTH /(2 * scale) + offset.getX() + location.getXCoord()) * scale))
+                .yCoord((int) ((MAP_HEIGHT /(2 * scale) + offset.getY() - location.getYCoord()) * scale))
                 .build();
     }
 
-    private void centerOnOrigin(List<Location> locations) {
+    private Point centerOnOrigin(List<Location> locations) {
         if(locations.size() > 0) {
             Location origin = locations.stream()
                     .filter(Location::isOrigin)
                     .collect(Collectors.toList())
                     .get(0);
-            this.xOffset = -origin.getXCoord();
-            this.yOffset = origin.getYCoord();
+            return new Point(-origin.getXCoord(), origin.getYCoord());
         }
+        return new Point(0, 0);
     }
 
-    private void scaleMap(List<Location> locations) {
+    private double getMapScale(List<Location> locations) {
         int mapMargin = 50 * 2;
         Location origin = getOrigin(locations);
         Location limitEast = max(locations, comparing(Location::getXCoord));
@@ -62,9 +58,12 @@ public class MapService {
         Location limitSouth = min(locations, comparing(Location::getYCoord));
         double boundX = 2 * max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
         double boundY = 2 * max(limitNorth.calculateDistanceTo(origin), limitSouth.calculateDistanceTo(origin));
-        double scaleX = boundX/(mapWidth - mapMargin);
-        double scaleY = boundY/(mapHeight - mapMargin);
-        this.mapScale = max(scaleX, scaleY) == 0 ? 1 : 1/max(scaleX, scaleY);
+        if(boundX == 0 && boundY == 0) {
+            return 1;
+        }
+        double scaleX = (MAP_WIDTH - mapMargin)/boundX;
+        double scaleY = (MAP_HEIGHT - mapMargin)/boundY;
+        return Math.min(scaleX, scaleY);
     }
 
     private Location getOrigin(List<Location> locations) {

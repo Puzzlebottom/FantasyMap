@@ -54,10 +54,10 @@ public class LocationControllerIntegrationTest {
         circles.forEach(System.out::println);
 
         assertThat(circles.size()).isEqualTo(2);
-        assertThat(circles.get(0).attr("cx")).isEqualTo("0");
-        assertThat(circles.get(0).attr("cy")).isEqualTo("0");
-        assertThat(circles.get(1).attr("cx")).isEqualTo("-12");
-        assertThat(circles.get(1).attr("cy")).isEqualTo("-20");
+        assertThat(circles.get(0).attr("cx")).isEqualTo("450");
+        assertThat(circles.get(0).attr("cy")).isEqualTo("300");
+        assertThat(circles.get(1).attr("cx")).isEqualTo("319");
+        assertThat(circles.get(1).attr("cy")).isEqualTo("82");
     }
 
     private void givenALocationExists(String name, int xCoord, int yCoord) {

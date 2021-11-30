@@ -21,7 +21,7 @@ public class LocationController {
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
-        Map map =  mapService.getScaledMap(locations);
+        Map map =  mapService.getMap(locations);
         model.addAttribute("map", map);
         return "map";
     }
