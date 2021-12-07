@@ -3,7 +3,6 @@ package com.conor.FantasyMap.controllers;
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.Map;
 import com.conor.FantasyMap.repositories.LocationRepository;
-import com.conor.FantasyMap.services.MapService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,12 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class LocationController {
     private final LocationRepository locationRepository;
-    private final MapService mapService;
 
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
-        Map map =  mapService.getMap(locations);
+        Map map = new Map().getMap(locations);
         model.addAttribute("map", map);
         return "map";
     }

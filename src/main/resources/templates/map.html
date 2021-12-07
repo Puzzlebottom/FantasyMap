@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<svg xmlns='http://www.w3.org/2000/svg' th:width="${map.width}" th:height="${map.width}">
-    <rect x="0" y="0" th:width="${map.width}" th:height="${map.height}"  stroke="black" fill="white" stroke-width="2"/>
+<svg xmlns='http://www.w3.org/2000/svg' th:width="${map.WIDTH}" th:height="${map.HEIGHT}">
+    <rect x="0" y="0" th:width="${map.WIDTH}" th:height="${map.HEIGHT}"  stroke="black" fill="white" stroke-width="2"/>
     <g th:replace="fragments/marker :: marker"></g>
 </svg>
 </body>
