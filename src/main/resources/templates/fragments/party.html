@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<circle th:fragment="party"
+\        th:attr="cx=${map.getPartyMapCoords.getX()}, cy=${map.getPartyMapCoords().getY()}"
+        r="7"
+        stroke="black"
+        stroke-width="2"
+        fill="transparent">
+</circle>
+<!--<text text-anchor="middle"-->
+<!--      th:fragment="party"-->
+<!--      th:text="PARTY"-->
+<!--      th:attr="x=${450}, y=${300} - 20">-->
+<!--</text>-->
+</body>
+</html>

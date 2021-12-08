@@ -18,13 +18,15 @@ public class Map {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
     private double scale;
+    private Point partyMapCoords;
 
-    public Map getMap(List<Location> locations) {
+    public Map getMap(List<Location> locations, List<LogEntry> log) {
         Point offset = centerOnOrigin(locations);
         double scale = getMapScale(locations);
         List<NamedPoint> points = locations.stream()
                 .map(location -> getNamedPoint(location, offset, scale))
                 .collect(Collectors.toList());
+        this.setPartyMapCoords(locateParty(log, offset, scale, getOrigin(locations)));
         this.setPoints(points);
         this.setScale(scale);
         return this;
@@ -71,5 +73,21 @@ public class Map {
     }
 
 
+    private Point locateParty(List<LogEntry> log, Point offset, double scale, Location origin) {
+        Point partyPosition = new Point();
+        if(log.size() > 0) {
+            partyPosition.setLocation(sumPositionalDelta(log));
+        } else {
+            partyPosition.setLocation(origin.getXCoord(), origin.getYCoord());
+        }
+        int x = (int) ((WIDTH /(2 * scale) + offset.getX() + partyPosition.getX()) * scale);
+        int y = (int) ((HEIGHT /(2 * scale) + offset.getY() - partyPosition.getY()) * scale);
+        return new Point(x, y);
+    }
 
+    private Point sumPositionalDelta(List<LogEntry> log) {
+        int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();
+        int y = (int) log.stream().mapToDouble(LogEntry::getDeltaY).sum();
+        return new Point(x, y);
+    }
 }
