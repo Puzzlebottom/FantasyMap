@@ -1,5 +1,6 @@
 package com.conor.FantasyMap.models;
 
+import com.conor.FantasyMap.services.TravelLog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -76,18 +77,12 @@ public class Map {
     private Point locateParty(List<LogEntry> log, Point offset, double scale, Location origin) {
         Point partyPosition = new Point();
         if(log.size() > 0) {
-            partyPosition.setLocation(sumPositionalDelta(log));
+            partyPosition.setLocation(TravelLog.sumPositionalDelta(log));
         } else {
             partyPosition.setLocation(origin.getXCoord(), origin.getYCoord());
         }
         int x = (int) ((WIDTH /(2 * scale) + offset.getX() + partyPosition.getX()) * scale);
         int y = (int) ((HEIGHT /(2 * scale) + offset.getY() - partyPosition.getY()) * scale);
-        return new Point(x, y);
-    }
-
-    private Point sumPositionalDelta(List<LogEntry> log) {
-        int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();
-        int y = (int) log.stream().mapToDouble(LogEntry::getDeltaY).sum();
         return new Point(x, y);
     }
 }

@@ -6,6 +6,7 @@
             th:each="point: ${map.points}"
             th:attr="cx=${point.xCoord}, cy=${point.yCoord}"
             r="5"
+            data-test-id="location"
             fill="red">
     </circle>
     <text text-anchor="middle"

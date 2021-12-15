@@ -13,13 +13,9 @@ public class FantasyMapApplication {
 
 }
 
-//TODO: move everything from MapService into Map.class, TDDing each unit as you go
 //TODO: create simple UI mockup
-//TODO: add TravelLog that computes party location from the entire travelLog (order by index)
-//TODO: top entry in TravelLog asserts a location for the party rendered on the map
-//TODO: create an endpoint to move the party by deltaHours deltaXY & create new log entry
-//TODO: if there are no log entries, party is at origin
-//TODO: otherwise party is at the sum of travel vectors
-//TODO: examine sausages (java generics)
 
-//TODO: Stretch Goal, UI that moves the party
+//TODO: FIX create an endpoint to move the party by deltaHours deltaXY & create new log entry
+//TODO: examine sausages (java generics)
+//TODO: UI that moves the party -- hint: HTML forms with hidden inputs are a good way to make a button that does a thing.. POST endpoints should redirect to /
+//TODO: stretch goal: use github actions to run the tests on every push (CI)

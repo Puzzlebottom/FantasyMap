@@ -50,7 +50,7 @@ public class LocationControllerIntegrationTest {
         givenALocationExists("Cathedral", -12, 20);
 
         Document doc = Jsoup.connect(baseUri).get();
-        Elements circles = doc.select("circle");
+        Elements circles = doc.select("[data-test-id=\"location\"]");
         circles.forEach(System.out::println);
 
         assertThat(circles.size()).isEqualTo(2);

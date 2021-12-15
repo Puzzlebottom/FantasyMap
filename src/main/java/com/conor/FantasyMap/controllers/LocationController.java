@@ -1,15 +1,15 @@
 package com.conor.FantasyMap.controllers;
 
-import com.conor.FantasyMap.models.Location;
-import com.conor.FantasyMap.models.LogEntry;
-import com.conor.FantasyMap.models.Map;
+import com.conor.FantasyMap.models.*;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
+import com.conor.FantasyMap.services.TravelLog;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class LocationController {
         Location origin = locationRepository.findLocationByName(originName);
         Location destination = locationRepository.findLocationByName(destinationName);
         Integer distance = origin.calculateDistanceTo(destination);
-        String direction = origin.calculateBearingTo(destination);
+        CardinalDirection direction = origin.calculateBearingTo(destination);
         return destinationName + " is " + distance + " miles " + direction + " from " + originName;
     }
 
@@ -75,7 +75,7 @@ public class LocationController {
     @ResponseBody
     public ResponseEntity<Object> addRelativeLocation(@RequestParam String origin, @RequestParam String direction, @RequestParam Integer distance, @RequestBody Location targetLocation) {
         Location originLocation = locationRepository.findLocationByName(origin);
-        targetLocation.setCoordsFromOriginByVector(originLocation, direction, distance);
+        targetLocation.setCoordsFromOriginByVector(originLocation, CardinalDirection.valueOf(direction), distance);
         locationRepository.save(targetLocation);
         return ResponseEntity.ok().build();
     }
@@ -86,6 +86,25 @@ public class LocationController {
         Location location = locationRepository.findLocationByName(targetLocation);
         location.updateInfo(info);
         locationRepository.save(location);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/log-entries/free")
+    @ResponseBody
+    public ResponseEntity<Object> moveFree(@RequestParam int directionInDegrees, @RequestParam int deltaHours) {
+        LogEntry logEntry = TravelLog.createLogEntryByCourse(directionInDegrees, deltaHours);
+        logEntryRepository.save(logEntry);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/log-entries/destination")
+    @ResponseBody
+    public ResponseEntity<Object> moveTo(@RequestParam String destinationName, @RequestParam int deltaHours) {
+        Location destination = locationRepository.findLocationByName(destinationName);
+        List<LogEntry> logs = logEntryRepository.findAll();
+        Point partyPosition = TravelLog.sumPositionalDelta(logs);
+        LogEntry logEntry = TravelLog.createLogEntryByDestination(partyPosition, destination, deltaHours);
+        logEntryRepository.save(logEntry);
         return ResponseEntity.ok().build();
     }
 }
