@@ -10,5 +10,16 @@
     <g th:replace="fragments/marker :: marker"></g>
     <g th:replace="fragments/party :: party"></g>
 </svg>
+<form method="post" action="/log-entries/destination">
+    <select name="destinationName">
+        <option value="Bastion">Bastion</option>
+        <option value="Silverfall Lodge">Silverfall Lodge</option>
+    </select>
+    <label>
+        Hours
+        <input type="text" name="deltaHours"/>
+    </label>
+    <input type="submit" value="Move"/>
+</form>
 </body>
 </html>

@@ -5,9 +5,11 @@ import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
 import com.conor.FantasyMap.services.TravelLog;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -97,15 +99,15 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/log-entries/destination")
-    @ResponseBody
-    public ResponseEntity<Object> moveTo(@RequestParam String destinationName, @RequestParam int deltaHours) {
-        Location destination = locationRepository.findLocationByName(destinationName);
+    @PostMapping(path="/log-entries/destination",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String moveTo(MoveToLocationRequest request) {
+        Location destination = locationRepository.findLocationByName(request.getDestinationName());
         List<LogEntry> logs = logEntryRepository.findAll();
         Point partyPosition = TravelLog.sumPositionalDelta(logs);
-        LogEntry logEntry = TravelLog.createLogEntryByDestination(partyPosition, destination, deltaHours);
+        LogEntry logEntry = TravelLog.createLogEntryByDestination(partyPosition, destination, request.getDeltaHours());
         logEntryRepository.save(logEntry);
-        return ResponseEntity.ok().build();
+        return "redirect:/";
     }
 }
 
