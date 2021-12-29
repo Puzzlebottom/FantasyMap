@@ -16,6 +16,7 @@ public class FantasyMapApplication {
 //TODO: create simple UI mockup
 
 //TODO: FIX create an endpoint to move the party by deltaHours deltaXY & create new log entry
+//TODO: TDD that endpoint with validation for well-formed log entries
 //TODO: examine sausages (java generics)
-//TODO: UI that moves the party -- hint: HTML forms with hidden inputs are a good way to make a button that does a thing.. POST endpoints should redirect to /
+//TODO: finish UI
 //TODO: stretch goal: use github actions to run the tests on every push (CI)

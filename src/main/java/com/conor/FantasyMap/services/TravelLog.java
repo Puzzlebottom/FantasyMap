@@ -1,9 +1,6 @@
 package com.conor.FantasyMap.services;
 
-import com.conor.FantasyMap.models.IPoint;
-import com.conor.FantasyMap.models.Location;
-import com.conor.FantasyMap.models.LogEntry;
-import com.conor.FantasyMap.models.Point;
+import com.conor.FantasyMap.models.*;
 
 import java.util.List;
 
@@ -16,10 +13,12 @@ public interface TravelLog {
         return new Point(x, y);
     }
 
-    static LogEntry createLogEntryByCourse(int directionInDegrees, int deltaHours) {
+    static LogEntry createLogEntryByCourse(String direction, int deltaHours) {
         double travelDistance = deltaHours * speedPerHour;
-        double deltaX = travelDistance * Math.cos(directionInDegrees);
-        double deltaY = travelDistance * Math.sin(directionInDegrees);
+        CardinalDirection cardinal = CardinalDirection.valueOf(direction);
+        double directionInDegrees = cardinal.toAngle();
+        double deltaX = travelDistance * Math.sin(Math.toRadians(directionInDegrees));
+        double deltaY = travelDistance * Math.cos(Math.toRadians(directionInDegrees));
         LogEntry logEntry = new LogEntry();
         logEntry.setDeltaX(deltaX);
         logEntry.setDeltaY(deltaY);

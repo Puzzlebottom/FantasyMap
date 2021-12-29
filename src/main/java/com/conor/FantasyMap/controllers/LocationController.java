@@ -5,6 +5,7 @@ import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
 import com.conor.FantasyMap.services.TravelLog;
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -91,12 +92,12 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/log-entries/free")
-    @ResponseBody
-    public ResponseEntity<Object> moveFree(@RequestParam int directionInDegrees, @RequestParam int deltaHours) {
-        LogEntry logEntry = TravelLog.createLogEntryByCourse(directionInDegrees, deltaHours);
+    @PostMapping(path="/log-entries/free",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String moveFree(MoveRequest request) {
+        LogEntry logEntry = TravelLog.createLogEntryByCourse(request.getDirection(), request.getDeltaHours());
         logEntryRepository.save(logEntry);
-        return ResponseEntity.ok().build();
+        return "redirect:/";
     }
 
     @PostMapping(path="/log-entries/destination",
