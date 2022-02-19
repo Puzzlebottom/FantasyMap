@@ -3,14 +3,12 @@ package com.conor.FantasyMap.controllers;
 import com.conor.FantasyMap.models.*;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
-import com.conor.FantasyMap.services.TravelLog;
+import com.conor.FantasyMap.models.LogEntryFactory;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -95,7 +93,7 @@ public class LocationController {
     @PostMapping(path="/log-entries/free",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public String moveFree(MoveRequest request) {
-        LogEntry logEntry = TravelLog.createLogEntryByCourse(request.getDirection(), request.getDeltaHours());
+        LogEntry logEntry = LogEntryFactory.createLogEntryByCourse(request.getDirection(), request.getDeltaHours());
         logEntryRepository.save(logEntry);
         return "redirect:/";
     }
@@ -105,8 +103,8 @@ public class LocationController {
     public String moveTo(MoveToLocationRequest request) {
         Location destination = locationRepository.findLocationByName(request.getDestinationName());
         List<LogEntry> logs = logEntryRepository.findAll();
-        Point partyPosition = TravelLog.sumPositionalDelta(logs);
-        LogEntry logEntry = TravelLog.createLogEntryByDestination(partyPosition, destination, request.getDeltaHours());
+        Point partyPosition = LogEntry.sumPositionalDelta(logs);
+        LogEntry logEntry = LogEntryFactory.createLogEntryByDestination(partyPosition, destination, request.getDeltaHours());
         logEntryRepository.save(logEntry);
         return "redirect:/";
     }

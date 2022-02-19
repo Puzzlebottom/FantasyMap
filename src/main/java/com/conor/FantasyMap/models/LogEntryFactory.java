@@ -1,20 +1,10 @@
-package com.conor.FantasyMap.services;
+package com.conor.FantasyMap.models;
 
-import com.conor.FantasyMap.models.*;
+public class LogEntryFactory {
+    private static final int SPEED_PER_HOUR = 3;
 
-import java.util.List;
-
-public interface TravelLog {
-    int speedPerHour = 3;
-
-    static Point sumPositionalDelta(List<LogEntry> log) {
-        int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();
-        int y = (int) log.stream().mapToDouble(LogEntry::getDeltaY).sum();
-        return new Point(x, y);
-    }
-
-    static LogEntry createLogEntryByCourse(String direction, int deltaHours) {
-        double travelDistance = deltaHours * speedPerHour;
+    public static LogEntry createLogEntryByCourse(String direction, int deltaHours) {
+        double travelDistance = deltaHours * SPEED_PER_HOUR;
         CardinalDirection cardinal = CardinalDirection.valueOf(direction);
         double directionInDegrees = cardinal.toAngle();
         double deltaX = travelDistance * Math.sin(Math.toRadians(directionInDegrees));
@@ -26,11 +16,11 @@ public interface TravelLog {
         return logEntry;
     }
 
-    static LogEntry createLogEntryByDestination(IPoint partyPosition, IPoint destination, int deltaHours) {
-        double travelDistance = deltaHours * speedPerHour;
+    public static LogEntry createLogEntryByDestination(IPoint partyPosition, IPoint destination, int deltaHours) {
         int currentX = (int) partyPosition.getX();
         int currentY = (int) partyPosition.getY();
         int totalDistance = partyPosition.calculateDistanceTo(destination);
+        double travelDistance = Math.min((deltaHours * SPEED_PER_HOUR), totalDistance);
         double x = partyPosition.getX() + travelDistance/totalDistance * (destination.getX() - partyPosition.getX());
         double y = partyPosition.getY() + travelDistance/totalDistance * (destination.getY() - partyPosition.getY());
         double deltaX = x - currentX;

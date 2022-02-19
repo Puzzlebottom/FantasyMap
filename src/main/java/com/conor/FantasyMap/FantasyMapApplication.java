@@ -15,7 +15,9 @@ public class FantasyMapApplication {
 
 //TODO: create simple UI mockup
 
-//TODO: FIX create an endpoint to move the party by deltaHours deltaXY & create new log entry
+//TODO: FIX create an endpoint to move the party by deltaHours deltaXY & create new log entry DONE
+//TODO: Do something with overflow hours in course log entries
+//TODO: Undo button
 //TODO: TDD that endpoint with validation for well-formed log entries
 //TODO: examine sausages (java generics)
 //TODO: finish UI

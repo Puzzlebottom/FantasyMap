@@ -48,4 +48,39 @@ class LocationControllerTest {
         assertThat(locationCaptor.getValue().getInfo()).contains("Bastion is a city");
     }
 
+    @Test
+    void moveFreeShouldCreateALogEntry() {
+        Location location = new Location();
+        location.setName("Bastion");
+        MoveRequest request = new MoveRequest();
+        request.setDeltaHours(8);
+        request.setDirection("N");
+
+        locationController.moveFree(request);
+    }
+
+    @Test
+    void moveFreeShouldMovePartyInCorrectDirection() {
+    }
+
+    @Test
+    void moveFreeShouldMovePartyCorrectDistance() {
+    }
+
+    @Test
+    void moveToShouldCreateValidLog() {
+    }
+
+    @Test
+    void moveToShouldMovePartyTowardCorrectTarget() {
+    }
+
+    @Test
+    void moveToShouldMovePartyCorrectDistance() {
+    }
+
+    @Test
+    void moveToShouldNotMovePartyBeyondTarget() {
+    }
+
 }
