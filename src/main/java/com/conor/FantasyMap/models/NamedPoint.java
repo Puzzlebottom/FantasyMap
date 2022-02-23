@@ -1,4 +1,4 @@
-package com.conor.FantasyMap.models;
+package com.conor.FantasyMap.presenters;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

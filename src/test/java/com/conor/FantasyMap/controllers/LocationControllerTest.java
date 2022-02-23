@@ -2,6 +2,7 @@ package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.repositories.LocationRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -49,6 +50,7 @@ class LocationControllerTest {
     }
 
     @Test
+    @Ignore
     void moveFreeShouldCreateALogEntry() {
         Location location = new Location();
         location.setName("Bastion");
@@ -60,26 +62,32 @@ class LocationControllerTest {
     }
 
     @Test
+    @Ignore
     void moveFreeShouldMovePartyInCorrectDirection() {
     }
 
     @Test
+    @Ignore
     void moveFreeShouldMovePartyCorrectDistance() {
     }
 
     @Test
+    @Ignore
     void moveToShouldCreateValidLog() {
     }
 
     @Test
+    @Ignore
     void moveToShouldMovePartyTowardCorrectTarget() {
     }
 
     @Test
+    @Ignore
     void moveToShouldMovePartyCorrectDistance() {
     }
 
     @Test
+    @Ignore
     void moveToShouldNotMovePartyBeyondTarget() {
     }
 

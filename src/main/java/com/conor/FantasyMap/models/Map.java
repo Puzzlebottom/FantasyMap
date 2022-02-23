@@ -1,5 +1,8 @@
-package com.conor.FantasyMap.models;
+package com.conor.FantasyMap.presenters;
 
+import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.LogEntry;
+import com.conor.FantasyMap.models.Point;
 import lombok.Getter;
 import lombok.Setter;
 

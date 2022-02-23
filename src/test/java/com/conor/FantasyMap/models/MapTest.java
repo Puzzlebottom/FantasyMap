@@ -1,5 +1,6 @@
 package com.conor.FantasyMap.models;
 
+import com.conor.FantasyMap.presenters.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

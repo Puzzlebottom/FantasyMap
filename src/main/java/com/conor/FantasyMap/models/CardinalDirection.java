@@ -8,6 +8,7 @@ public enum CardinalDirection {
 
     private static final List<Integer> cardinalDegrees = List.of(0, 45, 90, 135, 180, 225, 270, 315, 360);
     private static final List<CardinalDirection> cardinalValues = List.of(N, NE, E, SE, S, SW, W, NW, N);
+    private static final List<String> names = List.of("north", "northeast", "east", "southeast", "south", "southwest", "west", "northwest", "north");
     private static final int cardinalOffset = (360/cardinalValues.stream().distinct().toArray().length)/2;
 
 
@@ -19,5 +20,10 @@ public enum CardinalDirection {
 
     public int toAngle() {
         return cardinalDegrees.get(cardinalValues.indexOf(this));
+    }
+
+    public String getName() {
+        int index = cardinalValues.indexOf(this);
+        return names.get(index);
     }
 }

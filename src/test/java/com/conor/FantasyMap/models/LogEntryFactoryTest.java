@@ -2,7 +2,6 @@ package com.conor.FantasyMap.models;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
@@ -24,6 +23,38 @@ class LogEntryFactoryTest {
         assertThat(entry.getDeltaHours()).isEqualTo(10);
         assertThat(entry.getDeltaX()).isBetween(21.212, 21.214);
         assertThat(entry.getDeltaY()).isBetween(-21.214, -21.212);
+    }
+
+    @Test
+    void getDirectionNameShouldReturnSouth() {
+        LogEntry entry = LogEntryFactory.createLogEntryByCourse("S", 10);
+        assertThat(entry.getDirectionName()).isEqualTo("south");
+    }
+
+    @Test
+    void getDirectionNameShouldReturnEast() {
+        LogEntry entry = LogEntryFactory.createLogEntryByCourse("E", 10);
+        assertThat(entry.getDirectionName()).isEqualTo("east");
+    }
+
+    @Test
+    void getDirectionNameShouldReturnWest() {
+        LogEntry entry = LogEntryFactory.createLogEntryByCourse("W", 10);
+        assertThat(entry.getDirectionName()).isEqualTo("west");
+    }
+
+    @Test
+    void getDirectionNameShouldReturnNorth() {
+        LogEntry entry = LogEntryFactory.createLogEntryByCourse("N", 10);
+        assertThat(entry.getDirectionName()).isEqualTo("north");
+    }
+
+    @Test
+    void getDirectionNameShouldReturnSoutheastForIntermediaryAngle() {
+        LogEntry entry = new LogEntry();
+        entry.setDeltaX(13);
+        entry.setDeltaY(-11);
+        assertThat(entry.getDirectionName()).isEqualTo("southeast");
     }
 
 }

@@ -33,4 +33,10 @@ class CardinalDirectionTest {
         assertThat(W.toAngle()).isEqualTo(270);
     }
 
+    @Test
+    void getNameShouldReturnName() {
+        assertThat(N.getName()).isEqualTo("north");
+        assertThat(E.getName()).isEqualTo("east");
+        assertThat(ofAngle(32).getName()).isEqualTo("northeast");
+    }
 }

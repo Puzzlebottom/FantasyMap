@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.*;
+import com.conor.FantasyMap.presenters.Map;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
 import com.conor.FantasyMap.models.LogEntryFactory;
