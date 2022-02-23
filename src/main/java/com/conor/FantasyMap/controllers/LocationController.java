@@ -109,5 +109,13 @@ public class LocationController {
         logEntryRepository.save(logEntry);
         return "redirect:/";
     }
+
+    @PostMapping(path="/log-entries/delete-top-entry")
+    public String undoMove() {
+        LogEntry topEntry = logEntryRepository.findFirstByOrderByIdDesc();
+        logEntryRepository.deleteById(topEntry.getId());
+        return "redirect:/";
+    }
+
 }
 

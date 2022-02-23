@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface LogEntryRepository extends JpaRepository<LogEntry, Long> {
     List<LogEntry> findAll();
+
+    LogEntry findFirstByOrderByIdDesc();
+
+    void deleteById(Long id);
 }

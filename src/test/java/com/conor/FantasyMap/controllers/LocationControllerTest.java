@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,33 +63,7 @@ class LocationControllerTest {
     }
 
     @Test
-    @Ignore
-    void moveFreeShouldMovePartyInCorrectDirection() {
-    }
+    void undoMoveShouldDeleteLastLogEntry() {
 
-    @Test
-    @Ignore
-    void moveFreeShouldMovePartyCorrectDistance() {
     }
-
-    @Test
-    @Ignore
-    void moveToShouldCreateValidLog() {
-    }
-
-    @Test
-    @Ignore
-    void moveToShouldMovePartyTowardCorrectTarget() {
-    }
-
-    @Test
-    @Ignore
-    void moveToShouldMovePartyCorrectDistance() {
-    }
-
-    @Test
-    @Ignore
-    void moveToShouldNotMovePartyBeyondTarget() {
-    }
-
 }
