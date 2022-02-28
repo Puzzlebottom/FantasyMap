@@ -42,5 +42,8 @@
 <form method="post" action="/log-entries/delete-top-entry">
     <input type="submit" value="Undo">
 </form>
+<ol>
+    <li th:each="movement: ${travelLog.getMovements()}" th:text="${movement}"></li>
+</ol>
 </body>
 </html>

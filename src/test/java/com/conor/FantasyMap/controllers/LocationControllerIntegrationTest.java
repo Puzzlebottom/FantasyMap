@@ -22,23 +22,20 @@ public class LocationControllerIntegrationTest {
     private int port;
 
     @Autowired
-    private TestRestTemplate restTemplate;
-    private String baseUri;
+    private IntegrationTestHelper integrationTestHelper;
 
-    @BeforeEach
-    void setup() {
-        baseUri = "http://localhost:" + port;
-    }
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     void shouldUpdateInfoForALocation() {
-        givenALocationExists("Bastion");
+        integrationTestHelper.givenALocationExists(port, "Bastion");
 
-        restTemplate.postForObject(baseUri + "/stored-locations/location/info?targetLocation=Bastion",
+        restTemplate.postForObject(integrationTestHelper.getBaseUri(port) + "/stored-locations/location/info?targetLocation=Bastion",
                 "banana",
                 String.class);
 
-        List result = restTemplate.getForObject(baseUri + "/stored-locations/location/info?name=Bastion",
+        List result = restTemplate.getForObject(integrationTestHelper.getBaseUri(port) + "/stored-locations/location/info?name=Bastion",
                 List.class);
 
         assertThat(result).contains("banana");
@@ -46,30 +43,16 @@ public class LocationControllerIntegrationTest {
 
     @Test
     void shouldRenderLocationsOnMap() throws IOException {
-        givenALocationExists("Bastion");
-        givenALocationExists("Cathedral", -12, 20);
+        integrationTestHelper.givenALocationExists(port, "Bastion");
+        integrationTestHelper.givenALocationExists(port, "Cathedral", -12, 20);
 
-        Document doc = Jsoup.connect(baseUri).get();
+        Document doc = integrationTestHelper.getDoc(port);
         Elements circles = doc.select("[data-test-id=\"location\"]");
-        circles.forEach(System.out::println);
 
         assertThat(circles.size()).isEqualTo(2);
         assertThat(circles.get(0).attr("cx")).isEqualTo("450");
         assertThat(circles.get(0).attr("cy")).isEqualTo("300");
         assertThat(circles.get(1).attr("cx")).isEqualTo("319");
         assertThat(circles.get(1).attr("cy")).isEqualTo("82");
-    }
-
-    private void givenALocationExists(String name, int xCoord, int yCoord) {
-        Location location = new Location();
-        location.setName(name);
-        location.setXCoord(xCoord);
-        location.setYCoord(yCoord);
-
-        restTemplate.postForObject(baseUri + "/stored-locations", location, Object.class);
-    }
-
-    private void givenALocationExists(String name) {
-        givenALocationExists(name, 0, 0);
     }
 }

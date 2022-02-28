@@ -2,6 +2,7 @@ package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.*;
 import com.conor.FantasyMap.presenters.Map;
+import com.conor.FantasyMap.presenters.TravelLog;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
 import com.conor.FantasyMap.models.LogEntryFactory;
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +26,11 @@ public class LocationController {
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
-        List<LogEntry> log = logEntryRepository.findAll();
-        Map map = new Map().getMap(locations, log);
+        List<LogEntry> logEntries = logEntryRepository.findAll();
+        Map map = new Map().getMap(locations, logEntries);
         model.addAttribute("map", map);
+        TravelLog travelLog = new TravelLog(logEntries);
+        model.addAttribute("travelLog", travelLog);
         return "map";
     }
 
@@ -89,32 +93,6 @@ public class LocationController {
         location.updateInfo(info);
         locationRepository.save(location);
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(path="/log-entries/free",
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public String moveFree(MoveRequest request) {
-        LogEntry logEntry = LogEntryFactory.createLogEntryByCourse(request.getDirection(), request.getDeltaHours());
-        logEntryRepository.save(logEntry);
-        return "redirect:/";
-    }
-
-    @PostMapping(path="/log-entries/destination",
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public String moveTo(MoveToLocationRequest request) {
-        Location destination = locationRepository.findLocationByName(request.getDestinationName());
-        List<LogEntry> logs = logEntryRepository.findAll();
-        Point partyPosition = LogEntry.sumPositionalDelta(logs);
-        LogEntry logEntry = LogEntryFactory.createLogEntryByDestination(partyPosition, destination, request.getDeltaHours());
-        logEntryRepository.save(logEntry);
-        return "redirect:/";
-    }
-
-    @PostMapping(path="/log-entries/delete-top-entry")
-    public String undoMove() {
-        LogEntry topEntry = logEntryRepository.findFirstByOrderByIdDesc();
-        logEntryRepository.deleteById(topEntry.getId());
-        return "redirect:/";
     }
 
 }

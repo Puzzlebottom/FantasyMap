@@ -1,5 +1,7 @@
-package com.conor.FantasyMap.models;
+package com.conor.FantasyMap.presenters;
 
+import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.presenters.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

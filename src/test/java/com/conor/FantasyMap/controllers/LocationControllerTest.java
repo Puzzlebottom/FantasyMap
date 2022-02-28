@@ -49,21 +49,4 @@ class LocationControllerTest {
         verify(locationRepository).save(locationCaptor.capture());
         assertThat(locationCaptor.getValue().getInfo()).contains("Bastion is a city");
     }
-
-    @Test
-    @Ignore
-    void moveFreeShouldCreateALogEntry() {
-        Location location = new Location();
-        location.setName("Bastion");
-        MoveRequest request = new MoveRequest();
-        request.setDeltaHours(8);
-        request.setDirection("N");
-
-        locationController.moveFree(request);
-    }
-
-    @Test
-    void undoMoveShouldDeleteLastLogEntry() {
-
-    }
 }

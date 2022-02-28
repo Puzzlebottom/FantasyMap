@@ -14,7 +14,7 @@ public class TravelLog {
 
     public List<String> getMovements() {
         return logEntries.stream()
-                .map(logEntry -> "Party moved %s for %s hours".formatted(logEntry.getDirectionName(), logEntry.getDeltaHours()))
+                .map(logEntry -> "Party travelled %s for %s hours".formatted(logEntry.getDirectionName(), logEntry.getDeltaHours()))
                 .collect(toList());
     }
 }
