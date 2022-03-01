@@ -43,7 +43,7 @@
     <input type="submit" value="Undo">
 </form>
 <ol>
-    <li th:each="movement: ${travelLog.getMovements()}" th:text="${movement}"></li>
+    <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"></li>
 </ol>
 </body>
 </html>

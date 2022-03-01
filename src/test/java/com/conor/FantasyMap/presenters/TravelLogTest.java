@@ -1,23 +1,30 @@
 package com.conor.FantasyMap.presenters;
 
 import com.conor.FantasyMap.models.LogEntry;
-import com.conor.FantasyMap.models.LogEntryFactory;
+import com.conor.FantasyMap.models.Point;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.conor.FantasyMap.models.LogEntryFactory.createLogEntryByCourse;
+import static com.conor.FantasyMap.models.LogEntryFactory.createLogEntryByDestination;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class TravelLogTest {
     @Test
-    void getMovementsShouldReturnListOfFormattedMovements() {
-        List<LogEntry> logsEntries = List.of(createLogEntryByCourse("N", 24),
+    void getFormattedTravelLogShouldReturnListOfFormattedMovements() {
+        List<LogEntry> logEntries = List.of(createLogEntryByCourse("N", 24),
                 createLogEntryByCourse("E", 24));
-        TravelLog travelLog = new TravelLog(logsEntries);
+        TravelLog travelLog = new TravelLog(logEntries);
 
-        assertThat(travelLog.getMovements()).containsExactly("Party travelled north for 24 hours", "Party travelled east for 24 hours");
+        assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled north for 24 hours", "Party travelled east for 24 hours");
+    }
+
+    @Test
+    void getFormattedTravelLogShouldFormatForDestinationLogType() {
+        List<LogEntry> logEntries = List.of(createLogEntryByDestination(new Point(0, 0), new Point(25, 25), 100));
+        TravelLog travelLog = new TravelLog(logEntries);
+
+        assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled 100 hours toward DESTINATION");
     }
 }

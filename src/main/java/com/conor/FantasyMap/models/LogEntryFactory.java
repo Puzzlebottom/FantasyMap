@@ -13,6 +13,7 @@ public class LogEntryFactory {
         logEntry.setDeltaX(deltaX);
         logEntry.setDeltaY(deltaY);
         logEntry.setDeltaHours(deltaHours);
+        logEntry.setType(LogEntryType.COURSE);
         return logEntry;
     }
 
@@ -29,6 +30,7 @@ public class LogEntryFactory {
         logEntry.setDeltaX(deltaX);
         logEntry.setDeltaY(deltaY);
         logEntry.setDeltaHours(deltaHours);
+        logEntry.setType(LogEntryType.DESTINATION);
         return logEntry;
     }
 }

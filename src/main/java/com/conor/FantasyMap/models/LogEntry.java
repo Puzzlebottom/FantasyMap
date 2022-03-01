@@ -19,6 +19,7 @@ public class LogEntry {
     private double deltaX;
     private double deltaY;
     private int deltaHours;
+    private LogEntryType type;
 
     public static Point sumPositionalDelta(List<LogEntry> log) {
         int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();
