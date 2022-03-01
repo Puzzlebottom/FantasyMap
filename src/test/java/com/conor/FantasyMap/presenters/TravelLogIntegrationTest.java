@@ -49,6 +49,6 @@ public class TravelLogIntegrationTest {
         Elements li = doc.select("li");
 
         assertThat(li.size()).isEqualTo(1);
-        assertThat(li.get(0).text()).isEqualTo("Party travelled 24 hours toward DESTINATION");
+        assertThat(li.get(0).text()).isEqualTo("Party travelled 24 hours toward Bastion");
     }
 }

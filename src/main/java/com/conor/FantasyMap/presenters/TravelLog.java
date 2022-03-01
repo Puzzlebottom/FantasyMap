@@ -23,12 +23,12 @@ public class TravelLog {
 
     private String getFormattedEntry(LogEntry logEntry) {
         String courseFormat = "Party travelled %s for %s hours";
-        String destinationFormat = "Party travelled %s hours toward DESTINATION";
+        String destinationFormat = "Party travelled %s hours toward %s";
 
         if (logEntry.getType() == COURSE) {
             return courseFormat.formatted(logEntry.getDirectionName(), logEntry.getDeltaHours());
         } else if (logEntry.getType() == DESTINATION) {
-            return destinationFormat.formatted(logEntry.getDeltaHours());
+            return destinationFormat.formatted(logEntry.getDeltaHours(), logEntry.getLocation().getName());
         }
         throw new NotYetImplementedException();
     }

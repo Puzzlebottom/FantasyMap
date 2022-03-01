@@ -24,11 +24,12 @@ class TravelLogTest {
     @Test
     void getFormattedTravelLogShouldFormatForDestinationLogType() {
         Location destination = new Location();
+        destination.setName("Margaritaville");
         destination.setX(25);
         destination.setY(25);
         List<LogEntry> logEntries = List.of(createLogEntryByDestination(new Point(0, 0), destination, 100));
         TravelLog travelLog = new TravelLog(logEntries);
 
-        assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled 100 hours toward DESTINATION");
+        assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled 100 hours toward Margaritaville");
     }
 }
