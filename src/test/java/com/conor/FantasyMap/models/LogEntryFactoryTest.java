@@ -57,4 +57,19 @@ class LogEntryFactoryTest {
         assertThat(entry.getDirectionName()).isEqualTo("southeast");
     }
 
+    @Test
+    void createLogEntryByDestinationShouldCreateALogEntry() {
+        Location location = new Location();
+        location.setName("Destination");
+        location.setX(100);
+        location.setY(100);
+        location.setId(5L);
+        LogEntry entry = LogEntryFactory.createLogEntryByDestination(new Point(0, 0), location, 100);
+
+        assertThat(entry.getDeltaHours()).isEqualTo(100);
+        assertThat(entry.getDeltaX()).isEqualTo(100);
+        assertThat(entry.getDeltaY()).isEqualTo(100);
+        assertThat(entry.getLocation().getId()).isEqualTo(location.getId());
+    }
+
 }

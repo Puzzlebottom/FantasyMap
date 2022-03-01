@@ -2,9 +2,7 @@ package com.conor.FantasyMap.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 import static java.lang.Math.*;
@@ -20,6 +18,9 @@ public class LogEntry {
     private double deltaY;
     private int deltaHours;
     private LogEntryType type;
+    @ManyToOne
+    @JoinColumn(name="location_id")
+    private Location location;
 
     public static Point sumPositionalDelta(List<LogEntry> log) {
         int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();

@@ -1,5 +1,6 @@
 package com.conor.FantasyMap.presenters;
 
+import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.models.Point;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,10 @@ class TravelLogTest {
 
     @Test
     void getFormattedTravelLogShouldFormatForDestinationLogType() {
-        List<LogEntry> logEntries = List.of(createLogEntryByDestination(new Point(0, 0), new Point(25, 25), 100));
+        Location destination = new Location();
+        destination.setX(25);
+        destination.setY(25);
+        List<LogEntry> logEntries = List.of(createLogEntryByDestination(new Point(0, 0), destination, 100));
         TravelLog travelLog = new TravelLog(logEntries);
 
         assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled 100 hours toward DESTINATION");

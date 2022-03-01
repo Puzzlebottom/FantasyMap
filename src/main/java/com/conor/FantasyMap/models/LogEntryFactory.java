@@ -17,7 +17,7 @@ public class LogEntryFactory {
         return logEntry;
     }
 
-    public static LogEntry createLogEntryByDestination(IPoint partyPosition, IPoint destination, int deltaHours) {
+    public static LogEntry createLogEntryByDestination(IPoint partyPosition, Location destination, int deltaHours) {
         int currentX = (int) partyPosition.getX();
         int currentY = (int) partyPosition.getY();
         int totalDistance = partyPosition.calculateDistanceTo(destination);
@@ -31,6 +31,7 @@ public class LogEntryFactory {
         logEntry.setDeltaY(deltaY);
         logEntry.setDeltaHours(deltaHours);
         logEntry.setType(LogEntryType.DESTINATION);
+        logEntry.setLocation(destination);
         return logEntry;
     }
 }

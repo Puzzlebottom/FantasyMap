@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static java.lang.Math.*;
@@ -26,6 +27,8 @@ public class Location implements IPoint {
     @GeneratedValue
     private Long id;
     private boolean isOrigin = true;
+    @OneToMany(mappedBy="location")
+    private Set<LogEntry> logEntries;
 
     public void setCoordsFromOriginByVector(Location origin, CardinalDirection direction, Integer distance) {
         Point point = Point.fromOriginByVector(origin, direction, distance);
