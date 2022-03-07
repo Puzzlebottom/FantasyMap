@@ -21,4 +21,3 @@ public class FantasyMapApplication {
 //TODO: finish UI
 //TODO: stretch goal: use github actions to run the tests on every push (CI)
 //TODO: remove superfluous xCoord and yCoord from Location
-//TODO: Truncate or Clear DB between Integration Tests and Removes @DirtiesContext

@@ -37,7 +37,7 @@ public class Map {
     private NamedPoint getNamedPoint(Location location, Point offset, double scale) {
         return NamedPoint.builder()
                 .name(location.getName())
-                .xCoord((int) ((WIDTH /(2 * scale) + offset.getX() + location.getXCoord()) * scale))
+                .xCoord((int) ((WIDTH /(2 * scale) + offset.getX() + location.getX()) * scale))
                 .yCoord((int) ((HEIGHT /(2 * scale) + offset.getY() - location.getYCoord()) * scale))
                 .build();
     }
@@ -48,7 +48,7 @@ public class Map {
                     .filter(Location::isOrigin)
                     .collect(Collectors.toList())
                     .get(0);
-            return new Point(-origin.getXCoord(), origin.getYCoord());
+            return new Point(-origin.getX(), origin.getYCoord());
         }
         return new Point(0, 0);
     }
@@ -56,8 +56,8 @@ public class Map {
     private double getMapScale(List<Location> locations) {
         int mapMargin = 50 * 2;
         Location origin = getOrigin(locations);
-        Location limitEast = max(locations, comparing(Location::getXCoord));
-        Location limitWest = min(locations, comparing(Location::getXCoord));
+        Location limitEast = max(locations, comparing(Location::getX));
+        Location limitWest = min(locations, comparing(Location::getX));
         Location limitNorth = max(locations, comparing(Location::getYCoord));
         Location limitSouth = min(locations, comparing(Location::getYCoord));
         double boundX = 2 * Math.max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
@@ -80,7 +80,7 @@ public class Map {
         if(log.size() > 0) {
             partyPosition.setLocation(LogEntry.sumPositionalDelta(log));
         } else {
-            partyPosition.setLocation(origin.getXCoord(), origin.getYCoord());
+            partyPosition.setLocation(origin.getX(), origin.getYCoord());
         }
         int x = (int) ((WIDTH /(2 * scale) + offset.getX() + partyPosition.getX()) * scale);
         int y = (int) ((HEIGHT /(2 * scale) + offset.getY() - partyPosition.getY()) * scale);

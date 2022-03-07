@@ -35,9 +35,9 @@ class MapTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
         when(origin.isOrigin()).thenReturn(true);
-        when(origin.getXCoord()).thenReturn(0);
+        when(origin.getX()).thenReturn((double) 0);
         when(origin.getYCoord()).thenReturn(0);
-        when(notOrigin.getXCoord()).thenReturn(300);
+        when(notOrigin.getX()).thenReturn(300.0);
         when(notOrigin.getYCoord()).thenReturn(400);
         when(notOrigin.calculateDistanceTo(origin)).thenReturn(500);
         when(logOne.getDeltaX()).thenReturn(25.0);

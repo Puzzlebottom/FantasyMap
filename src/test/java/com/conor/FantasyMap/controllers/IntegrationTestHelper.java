@@ -53,7 +53,7 @@ public class IntegrationTestHelper {
     public void givenALocationExists(String name, int xCoord, int yCoord) {
         Location location = new Location();
         location.setName(name);
-        location.setXCoord(xCoord);
+        location.setX(xCoord);
         location.setYCoord(yCoord);
 
         restTemplate.postForObject(getBaseUri() + "/stored-locations", location, Object.class);
