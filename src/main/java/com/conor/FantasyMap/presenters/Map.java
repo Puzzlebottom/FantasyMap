@@ -38,7 +38,7 @@ public class Map {
         return NamedPoint.builder()
                 .name(location.getName())
                 .xCoord((int) ((WIDTH /(2 * scale) + offset.getX() + location.getX()) * scale))
-                .yCoord((int) ((HEIGHT /(2 * scale) + offset.getY() - location.getYCoord()) * scale))
+                .yCoord((int) ((HEIGHT /(2 * scale) + offset.getY() - location.getY()) * scale))
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class Map {
                     .filter(Location::isOrigin)
                     .collect(Collectors.toList())
                     .get(0);
-            return new Point(-origin.getX(), origin.getYCoord());
+            return new Point(-origin.getX(), origin.getY());
         }
         return new Point(0, 0);
     }
@@ -58,8 +58,8 @@ public class Map {
         Location origin = getOrigin(locations);
         Location limitEast = max(locations, comparing(Location::getX));
         Location limitWest = min(locations, comparing(Location::getX));
-        Location limitNorth = max(locations, comparing(Location::getYCoord));
-        Location limitSouth = min(locations, comparing(Location::getYCoord));
+        Location limitNorth = max(locations, comparing(Location::getY));
+        Location limitSouth = min(locations, comparing(Location::getY));
         double boundX = 2 * Math.max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
         double boundY = 2 * Math.max(limitNorth.calculateDistanceTo(origin), limitSouth.calculateDistanceTo(origin));
         if(boundX == 0 && boundY == 0) {
@@ -80,7 +80,7 @@ public class Map {
         if(log.size() > 0) {
             partyPosition.setLocation(LogEntry.sumPositionalDelta(log));
         } else {
-            partyPosition.setLocation(origin.getX(), origin.getYCoord());
+            partyPosition.setLocation(origin.getX(), origin.getY());
         }
         int x = (int) ((WIDTH /(2 * scale) + offset.getX() + partyPosition.getX()) * scale);
         int y = (int) ((HEIGHT /(2 * scale) + offset.getY() - partyPosition.getY()) * scale);

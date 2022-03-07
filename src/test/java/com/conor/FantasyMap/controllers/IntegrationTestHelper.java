@@ -50,11 +50,11 @@ public class IntegrationTestHelper {
         restTemplate.postForObject(getBaseUri() + "/log-entries/destination", entity, Object.class);
     }
 
-    public void givenALocationExists(String name, int xCoord, int yCoord) {
+    public void givenALocationExists(String name, double x, double y) {
         Location location = new Location();
         location.setName(name);
-        location.setX(xCoord);
-        location.setYCoord(yCoord);
+        location.setX(x);
+        location.setY(y);
 
         restTemplate.postForObject(getBaseUri() + "/stored-locations", location, Object.class);
     }

@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static java.lang.Math.*;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.concat;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueCoords", columnNames = {"xCoord", "yCoord"})})
+@Table(uniqueConstraints = {@UniqueConstraint(name = "UniqueCoords", columnNames = {"x", "y"})})
 @Getter
 @Setter
 public class Location implements IPoint {
@@ -21,8 +20,8 @@ public class Location implements IPoint {
     private String name;
     @ElementCollection
     private List<String> info;
-    private Integer xCoord;
-    private Integer yCoord;
+    private double x;
+    private double y;
     @Id
     @GeneratedValue
     private Long id;
@@ -44,21 +43,21 @@ public class Location implements IPoint {
 
     @Override
     public double getX() {
-        return this.xCoord;
+        return this.x;
     }
 
     @Override
     public double getY() {
-        return this.yCoord;
+        return this.y;
     }
 
     @Override
     public void setX(double value) {
-        this.xCoord = (int) value;
+        this.x = value;
     }
 
     @Override
     public void setY(double value) {
-        this.yCoord = (int) value;
+        this.y = value;
     }
 }
