@@ -9,8 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +57,11 @@ class MapTest {
     void getMapShouldCenterOnOriginLocation() {
         assertThat(map.getMap(List.of(origin), List.of()).getPoints().get(0).getXCoord()).isEqualTo(450);
         assertThat(map.getMap(List.of(origin), List.of()).getPoints().get(0).getYCoord()).isEqualTo(300);
+    }
+
+    @Test
+    void getMapShouldNotThrowExceptionWhenNoLocationsExist() {
+        map.getMap(emptyList(), emptyList());
     }
 
     @Test

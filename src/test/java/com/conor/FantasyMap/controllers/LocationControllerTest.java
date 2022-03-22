@@ -1,5 +1,6 @@
 package com.conor.FantasyMap.controllers;
 
+import com.conor.FantasyMap.models.CardinalDirection;
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.repositories.LocationRepository;
@@ -48,5 +49,22 @@ class LocationControllerTest {
 
         verify(locationRepository).save(locationCaptor.capture());
         assertThat(locationCaptor.getValue().getInfo()).contains("Bastion is a city");
+    }
+
+    @Test
+    void addRelativeLocationShouldSaveALocationWithCoordinates() {
+        Location cathedral = new Location();
+        cathedral.setName("Cathedral");
+        Location bastion = new Location();
+        bastion.setX(0);
+        bastion.setY(0);
+        when(locationRepository.findLocationByName("Bastion")).thenReturn(bastion);
+
+        locationController.addRelativeLocation("Bastion", "NW", 100, cathedral);
+
+        verify(locationRepository).save(locationCaptor.capture());
+        assertThat(locationCaptor.getValue().getName()).isEqualTo("Cathedral");
+        assertThat(locationCaptor.getValue().getX()).isEqualTo(-71.0);
+        assertThat(locationCaptor.getValue().getY()).isEqualTo(71.0);
     }
 }
