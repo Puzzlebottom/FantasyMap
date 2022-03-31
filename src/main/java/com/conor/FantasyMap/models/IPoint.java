@@ -25,8 +25,6 @@ public interface IPoint {
         return CardinalDirection.ofAngle(angle);
     }
 
-
-
     default int calculateDistanceTo(IPoint other) {
         double deltaX = other.getX() - this.getX();
         double deltaY = other.getY() - this.getY();

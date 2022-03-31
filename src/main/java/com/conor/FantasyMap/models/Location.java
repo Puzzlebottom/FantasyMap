@@ -23,7 +23,7 @@ public class Location implements IPoint {
     private double x;
     private double y;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean isOrigin = true;
     @OneToMany(mappedBy="location")

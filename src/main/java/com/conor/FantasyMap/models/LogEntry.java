@@ -11,7 +11,7 @@ import static java.lang.Math.*;
 @Getter
 @Setter
 public class LogEntry {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
     private double deltaX;

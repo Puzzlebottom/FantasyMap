@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-location_info
+      author: conor
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: location_info_id_unique
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: info
+                  type: text
+              - column:
+                  name: location_id
+                  type: BIGINT
+
+            tableName: location_info

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-log_entry
+      author: conor
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: log_entry_id_unique
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: delta_hours
+                  type: int
+              - column:
+                  name: deltax
+                  type: double
+              - column:
+                  name: deltay
+                  type: double
+              - column:
+                  name: type
+                  type: text
+              - column:
+                  name: location_id
+                  type: BIGINT
+
+            tableName: log_entry

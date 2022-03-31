@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/create.location.yaml
+  - include:
+      file: db/changelog/create.log_entry.yaml
+  - include:
+      file: db/changelog/create.location_info.yaml
