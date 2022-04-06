@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-location-name-uniqueness-constraint
+      author: conor
+      changes:
+        - addUniqueConstraint:
+            columnNames: name
+            constraintName: unique_location_name
+            tableName: location

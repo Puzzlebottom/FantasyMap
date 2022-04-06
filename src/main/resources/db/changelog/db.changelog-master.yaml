@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/create.log_entry.yaml
   - include:
       file: db/changelog/create.location_info.yaml
+  - include:
+      file: db/changelog/add.location.name.uniqueness.constraint.yaml
