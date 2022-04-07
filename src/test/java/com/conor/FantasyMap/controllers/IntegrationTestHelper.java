@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +21,7 @@ public class IntegrationTestHelper {
 
     private TestRestTemplate restTemplate;
     private int port;
+    private static final String AUTHORIZATION_HEADER = "Basic " + Base64.getEncoder().encodeToString("test:test".getBytes());
 
     String getBaseUri() {
         return "http://localhost:" + port;
@@ -33,6 +34,7 @@ public class IntegrationTestHelper {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", AUTHORIZATION_HEADER);
         HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/free", entity, Object.class);
@@ -45,6 +47,7 @@ public class IntegrationTestHelper {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.add("Authorization", AUTHORIZATION_HEADER);
         HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/destination", entity, Object.class);
@@ -55,8 +58,15 @@ public class IntegrationTestHelper {
         location.setName(name);
         location.setX(x);
         location.setY(y);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", AUTHORIZATION_HEADER);
 
-        restTemplate.postForObject(getBaseUri() + "/stored-locations", location, Object.class);
+        HttpEntity<Location> entity = new HttpEntity<>(location, headers);
+
+        ResponseEntity<Object> response = restTemplate.exchange(getBaseUri() + "/stored-locations", HttpMethod.POST, entity, Object.class);
+        if(!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("call failed");
+        }
     }
 
     public void givenALocationExists(String name) {
@@ -64,7 +74,9 @@ public class IntegrationTestHelper {
     }
 
     public Document getDoc() throws IOException {
-        return Jsoup.connect(getBaseUri()).get();
+        return Jsoup.connect(getBaseUri())
+                .header("Authorization", AUTHORIZATION_HEADER)
+                .get();
     }
 
     public List<String> getAllLocationNames() {
