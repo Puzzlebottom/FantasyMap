@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpMethod.POST;
 
 class LogEntryControllerIntegrationTest extends IntegrationTest {
     @Test
@@ -16,7 +17,7 @@ class LogEntryControllerIntegrationTest extends IntegrationTest {
         testHelper.givenPartyHasMoved("E", 12);
         testHelper.givenPartyHasMoved("SW", 9);
 
-        restTemplate.exchange("/log-entries/delete-top-entry", HttpMethod.POST, null, String.class);
+        testHelper.exchange("/log-entries/delete-top-entry", POST, null);
 
         Document doc = testHelper.getDoc();
         Elements li = doc.select("li");

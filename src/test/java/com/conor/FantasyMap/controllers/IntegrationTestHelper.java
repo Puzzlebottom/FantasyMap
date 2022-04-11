@@ -5,16 +5,18 @@ import lombok.AllArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @AllArgsConstructor
 public class IntegrationTestHelper {
@@ -32,9 +34,8 @@ public class IntegrationTestHelper {
         body.add("direction", direction);
         body.add("deltaHours", String.valueOf(deltaHours));
 
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = httpHeadersWithAuthorization();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", AUTHORIZATION_HEADER);
         HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/free", entity, Object.class);
@@ -45,9 +46,8 @@ public class IntegrationTestHelper {
         body.add("destinationName", destination);
         body.add("deltaHours", String.valueOf(deltaHours));
 
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = httpHeadersWithAuthorization();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add("Authorization", AUTHORIZATION_HEADER);
         HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/destination", entity, Object.class);
@@ -58,12 +58,8 @@ public class IntegrationTestHelper {
         location.setName(name);
         location.setX(x);
         location.setY(y);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", AUTHORIZATION_HEADER);
 
-        HttpEntity<Location> entity = new HttpEntity<>(location, headers);
-
-        ResponseEntity<Object> response = restTemplate.exchange(getBaseUri() + "/stored-locations", HttpMethod.POST, entity, Object.class);
+        ResponseEntity<Object> response = exchange("/stored-locations", POST, location);
         if(!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("call failed");
         }
@@ -80,10 +76,21 @@ public class IntegrationTestHelper {
     }
 
     public List<String> getAllLocationNames() {
+        ResponseEntity<List<Map<String, Object>>> result = exchange("/stored-locations", GET, null);
 
-        List<Map<String, Object>> result = restTemplate.getForObject(getBaseUri() + "/stored-locations", List.class);
-        return result.stream()
+        return result.getBody().stream()
                 .map(obj -> (String) obj.get("name"))
                 .collect(toList());
+    }
+
+    public <TResult, TRequest> ResponseEntity<TResult> exchange(String uriFragment, HttpMethod httpMethod, TRequest request) {
+        HttpEntity<TRequest> requestEntity = new HttpEntity<>(request, httpHeadersWithAuthorization());
+        return restTemplate.exchange(getBaseUri() + uriFragment, httpMethod, requestEntity, new ParameterizedTypeReference<>() {});
+    }
+
+    private static HttpHeaders httpHeadersWithAuthorization() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", AUTHORIZATION_HEADER);
+        return headers;
     }
 }

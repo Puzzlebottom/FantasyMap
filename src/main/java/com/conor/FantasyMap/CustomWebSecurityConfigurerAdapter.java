@@ -31,11 +31,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").authenticated().anyRequest().permitAll();
+        http.authorizeRequests().antMatchers("/**").hasRole("USER").and().httpBasic();
+        http.csrf().disable();
     }
 
     @Bean

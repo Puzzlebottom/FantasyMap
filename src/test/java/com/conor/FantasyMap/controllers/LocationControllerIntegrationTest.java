@@ -6,11 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 public class LocationControllerIntegrationTest extends IntegrationTest {
     @LocalServerPort
@@ -23,14 +27,13 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
     void shouldUpdateInfoForALocation() {
         testHelper.givenALocationExists("Bastion");
 
-        restTemplate.postForObject(testHelper.getBaseUri() + "/stored-locations/location/info?targetLocation=Bastion",
-                "banana",
-                String.class);
+        testHelper.exchange("/stored-locations/location/info?targetLocation=Bastion", POST,
+                "banana");
 
-        List result = restTemplate.getForObject(testHelper.getBaseUri() + "/stored-locations/location/info?name=Bastion",
-                List.class);
+        ResponseEntity<List> result = testHelper.exchange("/stored-locations/location/info?name=Bastion", GET,
+                null);
 
-        assertThat(result).contains("banana");
+        assertThat(result.getBody()).contains("banana");
     }
 
     @Test
