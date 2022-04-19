@@ -59,7 +59,7 @@ public class IntegrationTestHelper {
         location.setX(x);
         location.setY(y);
 
-        ResponseEntity<Object> response = exchange("/stored-locations", POST, location);
+        ResponseEntity<Object> response = exchange("/locations", POST, location);
         if(!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("call failed");
         }
@@ -76,7 +76,7 @@ public class IntegrationTestHelper {
     }
 
     public List<String> getAllLocationNames() {
-        ResponseEntity<List<Map<String, Object>>> result = exchange("/stored-locations", GET, null);
+        ResponseEntity<List<Map<String, Object>>> result = exchange("/locations", GET, null);
 
         return result.getBody().stream()
                 .map(obj -> (String) obj.get("name"))

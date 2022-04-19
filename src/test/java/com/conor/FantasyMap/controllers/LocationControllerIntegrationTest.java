@@ -3,37 +3,29 @@ package com.conor.FantasyMap.controllers;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 public class LocationControllerIntegrationTest extends IntegrationTest {
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     @Test
     void shouldUpdateInfoForALocation() {
         testHelper.givenALocationExists("Bastion");
 
-        testHelper.exchange("/stored-locations/location/info?targetLocation=Bastion", POST,
+        testHelper.exchange("/locations/Bastion/info", POST,
                 "banana");
-
-        ResponseEntity<List> result = testHelper.exchange("/stored-locations/location/info?name=Bastion", GET,
+        ResponseEntity<Map<String, Object>> result = testHelper.exchange("/locations/Bastion", GET,
                 null);
+        List<String> testInfo = (List<String>) result.getBody().get("info");
 
-        assertThat(result.getBody()).contains("banana");
+        assertThat(testInfo).contains("banana");
     }
 
     @Test
