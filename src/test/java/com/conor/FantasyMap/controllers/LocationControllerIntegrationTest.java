@@ -42,4 +42,11 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         assertThat(circles.get(1).attr("cx")).isEqualTo("319");
         assertThat(circles.get(1).attr("cy")).isEqualTo("82");
     }
+
+    @Test
+    void shouldRenderElapsedTime() throws IOException {
+        Document doc = testHelper.getDoc();
+        assertThat(doc.body().text()).contains("Day 1, 12AM");
+    }
+    //TODO Make destination selectors auto-poopulate from db
 }

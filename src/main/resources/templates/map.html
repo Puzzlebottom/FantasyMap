@@ -45,5 +45,6 @@
 <ol>
     <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"></li>
 </ol>
+<h3 th:text="${travelLog.getElapsedTime()}"/>
 </body>
 </html>

@@ -32,4 +32,30 @@ class TravelLogTest {
 
         assertThat(travelLog.getFormattedTravelLog()).containsExactly("Party travelled 100 hours toward Margaritaville");
     }
+
+    @Test
+    void getElapsedTimeShouldReturnAfternoonTime() {
+        List<LogEntry> logEntries = List.of(createLogEntryByCourse("N", 14),
+                createLogEntryByCourse("E", 24));
+        TravelLog travelLog = new TravelLog(logEntries);
+
+        assertThat(travelLog.getElapsedTime()).isEqualTo("Day 2, 2PM");
+    }
+
+    @Test
+    void getElapsedTimeShouldReturnMorningTime() {
+        List<LogEntry> logEntries = List.of(createLogEntryByCourse("N", 36),
+                createLogEntryByCourse("E", 37));
+        TravelLog travelLog = new TravelLog(logEntries);
+
+        assertThat(travelLog.getElapsedTime()).isEqualTo("Day 4, 1AM");
+    }
+
+    @Test
+    void getElapsedTimeShouldHandleMidnightCases() {
+        List<LogEntry> logEntries = List.of();
+        TravelLog travelLog = new TravelLog(logEntries);
+
+        assertThat(travelLog.getElapsedTime()).isEqualTo("Day 1, 12AM");
+    }
 }
