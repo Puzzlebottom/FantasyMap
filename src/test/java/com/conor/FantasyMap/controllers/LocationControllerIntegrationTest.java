@@ -35,12 +35,17 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
 
         Document doc = testHelper.getDoc();
         Elements circles = doc.select("[data-test-id=\"location\"]");
+        Elements destinationOptions = doc.select("[data-test-id=\"destination\"]");
 
         assertThat(circles.size()).isEqualTo(2);
         assertThat(circles.get(0).attr("cx")).isEqualTo("450");
         assertThat(circles.get(0).attr("cy")).isEqualTo("300");
         assertThat(circles.get(1).attr("cx")).isEqualTo("319");
         assertThat(circles.get(1).attr("cy")).isEqualTo("82");
+
+        assertThat(destinationOptions.size()).isEqualTo(2);
+        assertThat(destinationOptions.get(0).text()).isEqualTo("Bastion");
+        assertThat(destinationOptions.get(1).text()).isEqualTo("Cathedral");
     }
 
     @Test
@@ -48,5 +53,4 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         Document doc = testHelper.getDoc();
         assertThat(doc.body().text()).contains("Day 1, 12AM");
     }
-    //TODO Make destination selectors auto-poopulate from db
 }

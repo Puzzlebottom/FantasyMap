@@ -12,9 +12,11 @@
 </svg>
 <form method="post" action="/log-entries/destination">
     <select name="destinationName">
-        <option value="Bastion">Bastion</option>
-        <option value="Cathedral">Cathedral</option>
-        <option value="Silverfall Lodge">Silverfall Lodge</option>
+        <option th:each="destination: ${map.getPoints()}"
+                th:value="${destination.getName()}"
+                th:text="${destination.getName()}"
+                data-test-id="destination">
+        </option>
     </select>
     <label>
         Hours
