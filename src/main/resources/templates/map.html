@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="map.css"/>
 </head>
 <body>
 <svg xmlns='http://www.w3.org/2000/svg' th:width="${map.WIDTH}" th:height="${map.HEIGHT}">
@@ -10,43 +11,57 @@
     <g th:replace="fragments/marker :: marker"></g>
     <g th:replace="fragments/party :: party"></g>
 </svg>
-<form method="post" action="/log-entries/destination">
-    <select name="destinationName">
-        <option th:each="destination: ${map.getPoints()}"
-                th:value="${destination.getName()}"
-                th:text="${destination.getName()}"
-                data-test-id="destination">
-        </option>
-    </select>
-    <label>
-        Hours
-        <input type="text" name="deltaHours"/>
-    </label>
-    <input type="submit" value="Move"/>
-</form>
-<form method="post" action="/log-entries/free">
-    <select name="direction">
-        <option value="N">N</option>
-        <option value="NE">NE</option>
-        <option value="E">E</option>
-        <option value="SE">SE</option>
-        <option value="S">S</option>
-        <option value="SW">SW</option>
-        <option value="W">W</option>
-        <option value="NW">NW</option>
-    </select>
-    <label>
-        Hours
-        <input type="text" name="deltaHours"/>
-    </label>
-    <input type="submit" value="Move"/>
-</form>
-<form method="post" action="/log-entries/delete-top-entry">
-    <input type="submit" value="Undo">
-</form>
-<ol>
-    <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"></li>
-</ol>
-<h3 th:text="${travelLog.getElapsedTime()}"/>
+<panel-wrapper>
+    <movement-panel>
+        <form method="post" action="/log-entries/destination">
+            DESTINATION
+            <select name="destinationName">
+                <option th:each="destination: ${map.getPoints()}"
+                        th:value="${destination.getName()}"
+                        th:text="${destination.getName()}"
+                        data-test-id="destination">
+                </option>
+            </select>
+            <br>
+            <label>
+                Move
+                <input class="text-field" type="text" name="deltaHours"/>
+                hours toward (DESTINATION)
+            </label>
+            <input class="go-button" type="submit" value="GO!"/>
+        </form>
+        <form method="post" action="/log-entries/free">
+            Move
+            <select name="direction">
+                <option value="N">North</option>
+                <option value="NE">North-East</option>
+                <option value="E">East</option>
+                <option value="SE">South-East</option>
+                <option value="S">South</option>
+                <option value="SW">South-West</option>
+                <option value="W">West</option>
+                <option value="NW">North-West</option>
+            </select>
+            <label>
+                for
+                <input class="text-field" type="text" name="deltaHours"/>
+                hours
+            </label>
+            <input class="go-button" type="submit" value="GO!"/>
+        </form>
+        <form method="post" action="/log-entries/delete-top-entry">
+            <input type="submit" value="UNDO MOVE">
+        </form>
+    </movement-panel>
+    <tool-panel>
+        Tools
+    </tool-panel>
+    <log-panel>
+        <elapsed-time th:text="${travelLog.getElapsedTime()}"/>
+        <ul>
+            <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"></li>
+        </ul>
+    </log-panel>
+</panel-wrapper>
 </body>
 </html>

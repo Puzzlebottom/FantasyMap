@@ -15,3 +15,11 @@ public class FantasyMapApplication {
 //TODO: Do something with overflow hours in course log entries
 //TODO: finish UI
 //TODO: stretch goal: use github actions to run the tests on every push (CI)
+//TODO: Destination Persistence
+//TODO: Fix error when move free endpoint is hit with no delta hours
+//TODO: Fix error when move to endpoint is hit with no delta hours
+//TODO: Fix Error when undo is clicked with no log entries in db
+//TODO: Fix scaling when party is off the map (save current coords as location?)
+//TODO: Scale origin marker relative to map scale
+//TODO: Implement pace of travel (Not MVP, but...)
+

@@ -1,0 +1,53 @@
+body{
+    display: flex;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 400;
+    width: available;
+}
+svg{
+    min-height: fit-content;
+    min-width: fit-content;
+}
+panel-wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    height: 600px;
+    width: available;
+    min-width: fit-content;
+}
+movement-panel{
+    border: thin solid black;
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px 8px;
+}
+tool-panel{
+    border: thin solid black;
+    display: flex;
+    flex-direction: column;
+    margin: 0 8px;
+}
+log-panel{
+    border: thin solid black;
+    display: flex;
+    flex-direction: column-reverse;
+    flex: 1 1 0;
+    overflow: scroll;
+    margin: 8px 8px 0;
+}
+form{
+    margin: 4px;
+}
+elapsed-time{
+    float: top;
+}
+.text-field{
+    width: 40px;
+}
+.go-button{
+    width: 50px;
+    float: right;
+}
