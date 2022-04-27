@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-destination-field-to-location
+      author: conor
+      changes:
+        - addColumn:
+            tableName: location
+            columns:
+              - column:
+                  name: is_destination
+                  type: boolean

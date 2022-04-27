@@ -1,10 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
-import com.conor.FantasyMap.models.CardinalDirection;
 import com.conor.FantasyMap.models.Location;
-import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.repositories.LocationRepository;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -66,5 +63,37 @@ class LocationControllerTest {
         assertThat(locationCaptor.getValue().getName()).isEqualTo("Cathedral");
         assertThat(locationCaptor.getValue().getX()).isEqualTo(-71.0);
         assertThat(locationCaptor.getValue().getY()).isEqualTo(71.0);
+    }
+
+    @Test
+    void setCurrentDestinationShouldSetOneLocationAsCurrentDestination() {
+        Location oldDestination = new Location();
+        Location newDestination = new Location();
+        oldDestination.setDestination(true);
+        when(locationRepository.findLocationByIsDestinationIsTrue()).thenReturn(oldDestination);
+        when(locationRepository.findLocationByName("newDestination")).thenReturn(newDestination);
+
+        locationController.setCurrentDestination("newDestination");
+
+        verify(locationRepository, times(2)).save(locationCaptor.capture());
+
+        List<Location> allLocations = locationCaptor.getAllValues();
+        assertThat(allLocations.get(0).isDestination()).isEqualTo(false);
+        assertThat(allLocations.get(1).isDestination()).isEqualTo(true);
+    }
+
+    @Test
+    void setCurrentDestinationShouldWorkWhenNoPriorDestinationHasBeenSet() {
+        Location newDestination = new Location();
+        when(locationRepository.findLocationByIsDestinationIsTrue()).thenReturn(null);
+        when(locationRepository.findLocationByName("newDestination")).thenReturn(newDestination);
+
+        locationController.setCurrentDestination("newDestination");
+
+        verify(locationRepository).save(locationCaptor.capture());
+
+        List<Location> allLocations = locationCaptor.getAllValues();
+        assertThat(allLocations.size()).isEqualTo(1);
+        assertThat(allLocations.get(0).isDestination()).isEqualTo(true);
     }
 }

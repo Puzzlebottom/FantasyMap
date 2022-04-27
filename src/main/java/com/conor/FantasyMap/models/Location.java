@@ -26,6 +26,7 @@ public class Location implements IPoint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean isOrigin = true;
+    private boolean isDestination = false;
     @OneToMany(mappedBy="location")
     private Set<LogEntry> logEntries;
 

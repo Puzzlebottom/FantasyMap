@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/create.location_info.yaml
   - include:
       file: db/changelog/add.location.name.uniqueness.constraint.yaml
+  - include:
+      file: db/changelog/add.destination.field.to.location.yaml

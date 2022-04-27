@@ -5,12 +5,9 @@ import com.conor.FantasyMap.presenters.Map;
 import com.conor.FantasyMap.presenters.TravelLog;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
-import com.conor.FantasyMap.models.LogEntryFactory;
 import lombok.AllArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +30,7 @@ public class LocationController {
         model.addAttribute("travelLog", travelLog);
         return "map";
     }
+
     @GetMapping("/locations")
     @ResponseBody
     public List<Location> getAllLocations() {
@@ -89,5 +87,17 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/locations/{name}/destination")
+    public ResponseEntity<Object> setCurrentDestination(@PathVariable String name) {
+        Location previousDestination = locationRepository.findLocationByIsDestinationIsTrue();
+        Location currentDestination = locationRepository.findLocationByName(name);
+        if(previousDestination != null) {
+            previousDestination.setDestination(false);
+            locationRepository.save(previousDestination);
+        };
+        currentDestination.setDestination(true);
+        locationRepository.save(currentDestination);
+        return ResponseEntity.ok().build();
+    }
 }
 
