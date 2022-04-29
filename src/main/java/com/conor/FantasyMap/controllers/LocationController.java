@@ -6,6 +6,7 @@ import com.conor.FantasyMap.presenters.TravelLog;
 import com.conor.FantasyMap.repositories.LocationRepository;
 import com.conor.FantasyMap.repositories.LogEntryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,15 +68,15 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/locations/relative/{newLocationName}")
-    @ResponseBody
-    public ResponseEntity<Object> addRelativeLocation(@RequestBody String origin, @RequestBody String direction, @RequestBody Integer distance, @PathVariable String newLocationName) {
-        Location originLocation = locationRepository.findLocationByName(origin);
+    @PostMapping(path="/locations/relative",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String addRelativeLocation(NewLocationRequest request) {
+        Location originLocation = locationRepository.findLocationByName(request.getOrigin());
         Location targetLocation = new Location();
-        targetLocation.setName(newLocationName);
-        targetLocation.setCoordsFromOriginByVector(originLocation, CardinalDirection.valueOf(direction), distance);
+        targetLocation.setName(request.getNewLocationName());
+        targetLocation.setCoordsFromOriginByVector(originLocation, CardinalDirection.valueOf(request.getDirection()), request.getDistance());
         locationRepository.save(targetLocation);
-        return ResponseEntity.ok().build();
+        return "redirect:/";
     }
 
     @PostMapping("/locations/{name}/info")

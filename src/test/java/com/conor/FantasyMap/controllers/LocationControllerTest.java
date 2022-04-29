@@ -55,9 +55,14 @@ class LocationControllerTest {
         Location bastion = new Location();
         bastion.setX(0);
         bastion.setY(0);
+        NewLocationRequest request = new NewLocationRequest();
+        request.setOrigin("Bastion");
+        request.setDirection("NW");
+        request.setDistance(100);
+        request.setNewLocationName("Cathedral");
         when(locationRepository.findLocationByName("Bastion")).thenReturn(bastion);
 
-        locationController.addRelativeLocation("Bastion", "NW", 100, "Cathedral");
+        locationController.addRelativeLocation(request);
 
         verify(locationRepository).save(locationCaptor.capture());
         assertThat(locationCaptor.getValue().getName()).isEqualTo("Cathedral");

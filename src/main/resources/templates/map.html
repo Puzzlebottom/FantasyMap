@@ -54,7 +54,33 @@
         </form>
     </movement-panel>
     <tool-panel>
-        Tools
+        Create New Location
+        <form method="post" action="/locations/relative">
+            <input type="text" name="newLocationName" required>
+            is
+            <input class="text-field" type="text" name="distance" required/>
+            miles
+            <select name="direction">
+                <option value="N">North</option>
+                <option value="NE">North-East</option>
+                <option value="E">East</option>
+                <option value="SE">South-East</option>
+                <option value="S">South</option>
+                <option value="SW">South-West</option>
+                <option value="W">West</option>
+                <option value="NW">North-West</option>
+            </select>
+            <br>
+            from
+            <select name="origin">
+                <option th:each="origin: ${map.getPoints()}"
+                        th:value="${origin.getName()}"
+                        th:text="${origin.getName()}">
+                </option>
+            </select>
+
+            <input type="submit" value="ADD LOCATION">
+        </form>
     </tool-panel>
     <log-panel>
         <elapsed-time th:text="${travelLog.getElapsedTime()}"/>
