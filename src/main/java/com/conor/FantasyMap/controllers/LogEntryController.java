@@ -44,7 +44,10 @@ public class LogEntryController {
     @PostMapping(path="/log-entries/delete-top-entry")
     public String undoMove() {
         LogEntry topEntry = logEntryRepository.findFirstByOrderByIdDesc();
-        logEntryRepository.deleteById(topEntry.getId());
+        if (topEntry != null) {
+            logEntryRepository.deleteById(topEntry.getId());
+        }
         return "redirect:/";
     }
 }
+ 
