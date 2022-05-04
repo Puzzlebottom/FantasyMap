@@ -14,6 +14,7 @@ import java.util.List;
 
 import static java.util.Collections.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MapTest {
@@ -70,17 +71,32 @@ class MapTest {
     }
 
     @Test
+    void getMapShouldScaleToIncludePartyPosition() {
+        LogEntry logThree = mock(LogEntry.class);
+        when(logThree.getDeltaX()).thenReturn(1000.0);
+        when(logThree.getDeltaY()).thenReturn(1000.0);
+
+        Map renderedMap = map.getMap(List.of(origin), List.of(logThree));
+        assertThat(renderedMap.getPartyMapCoords().getX()).isLessThan(900 - 50);
+        assertThat(renderedMap.getPartyMapCoords().getY()).isLessThan(600 - 50);
+        assertThat(renderedMap.getPartyMapCoords().getX()).isGreaterThan(50);
+        assertThat(renderedMap.getPartyMapCoords().getY()).isGreaterThan(50);
+    }
+
+    @Test
     void getMapShouldSetPartyCoordsToOriginWithNoLog() {
         assertThat(map.getMap(List.of(origin), List.of()).getPartyMapCoords().getX()).isEqualTo(450);
         assertThat(map.getMap(List.of(origin), List.of()).getPartyMapCoords().getY()).isEqualTo(300);
     }
 
     @Test
-    void getMapShouldSetPartyCoordsCorrectlyWithLog() {
-        assertThat(map.getMap(List.of(origin), List.of(logOne)).getPartyMapCoords().getX()).isEqualTo(475);
-        assertThat(map.getMap(List.of(origin), List.of(logOne)).getPartyMapCoords().getY()).isEqualTo(275);
-        assertThat(map.getMap(List.of(origin), List.of(logOne, logTwo)).getPartyMapCoords().getX()).isEqualTo(425);
-        assertThat(map.getMap(List.of(origin), List.of(logOne, logTwo)).getPartyMapCoords().getY()).isEqualTo(325);
-
+    void getMapShouldSetScaledPartyCoordsWithLogEntries() {
+        Location locationCausingScaleToBeOne = new Location();
+        locationCausingScaleToBeOne.setX(0);
+        locationCausingScaleToBeOne.setY(250);
+        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getX()).isEqualTo(475);
+        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getY()).isEqualTo(275);
+        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getX()).isEqualTo(425);
+        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getY()).isEqualTo(325);
     }
 }

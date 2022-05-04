@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.max;
 import static java.util.Collections.min;
@@ -26,11 +27,14 @@ public class Map {
 
     public Map getMap(List<Location> locations, List<LogEntry> log) {
         Point offset = centerOnOrigin(locations);
-        double scale = getMapScale(locations);
+        IPoint origin = getOrigin(locations);
+        IPoint partyPositionWorld = getPartyPositionWorld(log, origin);
+        List<IPoint> locationsAndPartyPosition = Stream.concat(Stream.of(partyPositionWorld), locations.stream()).toList();
+        double scale = getMapScale(locationsAndPartyPosition, origin);
         List<NamedPoint> points = locations.stream()
                 .map(location -> getNamedPoint(location, offset, scale))
                 .collect(Collectors.toList());
-        this.setPartyMapCoords(locateParty(log, offset, scale, getOrigin(locations)));
+        this.setPartyMapCoords(getPartyPositionMap(log, offset, scale, origin));
         this.setPoints(points);
         this.setScale(scale);
         return this;
@@ -54,19 +58,19 @@ public class Map {
 
     }
 
-    private double getMapScale(List<Location> locations) {
+    private double getMapScale(List<IPoint> locations, IPoint origin) {
         if (locations.size() < 2) {
             return 1;
         }
 
         int mapMargin = 50 * 2;
-        IPoint origin = getOrigin(locations);
-        Location limitEast = max(locations, comparing(Location::getX));
-        Location limitWest = min(locations, comparing(Location::getX));
-        Location limitNorth = max(locations, comparing(Location::getY));
-        Location limitSouth = min(locations, comparing(Location::getY));
+        IPoint limitEast = max(locations, comparing(IPoint::getX));
+        IPoint limitWest = min(locations, comparing(IPoint::getX));
+        IPoint limitNorth = max(locations, comparing(IPoint::getY));
+        IPoint limitSouth = min(locations, comparing(IPoint::getY));
         double boundX = 2 * Math.max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
         double boundY = 2 * Math.max(limitNorth.calculateDistanceTo(origin), limitSouth.calculateDistanceTo(origin));
+        if(boundX < 0.1 && boundY < 0.1) {return 1;}
         double scaleX = (WIDTH - mapMargin) / boundX;
         double scaleY = (HEIGHT - mapMargin) / boundY;
         return Math.min(scaleX, scaleY);
@@ -82,15 +86,20 @@ public class Map {
     }
 
 
-    private Point locateParty(List<LogEntry> log, Point offset, double scale, IPoint origin) {
+    private Point getPartyPositionMap(List<LogEntry> log, Point offset, double scale, IPoint origin) {
+        Point partyPosition = getPartyPositionWorld(log, origin);
+        int x = (int) ((WIDTH / (2 * scale) + offset.getX() + partyPosition.getX()) * scale);
+        int y = (int) ((HEIGHT / (2 * scale) + offset.getY() - partyPosition.getY()) * scale);
+        return new Point(x, y);
+    }
+
+    private Point getPartyPositionWorld(List<LogEntry> log, IPoint origin) {
         Point partyPosition = new Point();
         if (log.size() > 0) {
             partyPosition.setLocation(LogEntry.sumPositionalDelta(log));
         } else {
             partyPosition.setLocation(origin.getX(), origin.getY());
         }
-        int x = (int) ((WIDTH / (2 * scale) + offset.getX() + partyPosition.getX()) * scale);
-        int y = (int) ((HEIGHT / (2 * scale) + offset.getY() - partyPosition.getY()) * scale);
-        return new Point(x, y);
+        return partyPosition;
     }
 }
