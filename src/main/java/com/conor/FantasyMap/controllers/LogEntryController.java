@@ -50,4 +50,3 @@ public class LogEntryController {
         return "redirect:/";
     }
 }
- 
