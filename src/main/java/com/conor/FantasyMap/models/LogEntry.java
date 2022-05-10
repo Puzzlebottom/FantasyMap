@@ -20,7 +20,7 @@ public class LogEntry {
     private LogEntryType type;
     @ManyToOne
     @JoinColumn(name="location_id")
-    private Location location;
+    private Location destination;
 
     public static Point sumPositionalDelta(List<LogEntry> log) {
         int x = (int) log.stream().mapToDouble(LogEntry::getDeltaX).sum();
@@ -28,9 +28,15 @@ public class LogEntry {
         return new Point(x, y);
     }
 
+    public Location getCurrentDestination(List<LogEntry> log) {
+        List<Location> destinations = log.stream().map(LogEntry::getDestination).toList();
+        return destinations.get(destinations.size() - 1);
+    }
+
     public String getDirectionName() {
         double theta = toDegrees(atan2(-this.deltaY, this.deltaX));
         CardinalDirection cardinalDirection = CardinalDirection.ofAngle((int) round(theta) + 90);
         return cardinalDirection.getName();
     }
+
 }

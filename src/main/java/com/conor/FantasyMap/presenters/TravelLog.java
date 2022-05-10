@@ -44,7 +44,7 @@ public class TravelLog {
         if (logEntry.getType() == COURSE) {
             return courseFormat.formatted(logEntry.getDirectionName(), logEntry.getDeltaHours());
         } else if (logEntry.getType() == DESTINATION) {
-            return destinationFormat.formatted(logEntry.getDeltaHours(), logEntry.getLocation().getName());
+            return destinationFormat.formatted(logEntry.getDeltaHours(), logEntry.getDestination().getName());
         }
         throw new NotYetImplementedException();
     }

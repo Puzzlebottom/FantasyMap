@@ -27,7 +27,7 @@ public class Location implements IPoint {
     private Long id;
     private boolean isOrigin = true;
     private boolean isDestination = false;
-    @OneToMany(mappedBy="location")
+    @OneToMany(mappedBy= "destination")
     private Set<LogEntry> logEntries;
 
     public void setCoordsFromOriginByVector(Location origin, CardinalDirection direction, Integer distance) {

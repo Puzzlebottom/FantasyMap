@@ -69,7 +69,7 @@ class LogEntryFactoryTest {
         assertThat(entry.getDeltaHours()).isEqualTo(100);
         assertThat(entry.getDeltaX()).isEqualTo(100);
         assertThat(entry.getDeltaY()).isEqualTo(100);
-        assertThat(entry.getLocation().getId()).isEqualTo(location.getId());
+        assertThat(entry.getDestination().getId()).isEqualTo(location.getId());
     }
 
 }
