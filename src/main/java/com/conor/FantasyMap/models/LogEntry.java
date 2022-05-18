@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.Math.*;
 
@@ -28,9 +29,14 @@ public class LogEntry {
         return new Point(x, y);
     }
 
-    public Location getCurrentDestination(List<LogEntry> log) {
-        List<Location> destinations = log.stream().map(LogEntry::getDestination).toList();
-        return destinations.get(destinations.size() - 1);
+    public static Optional<Location> getCurrentDestination(List<LogEntry> log) {
+        List<Location> destinations = log.stream()
+                .filter(logEntry -> logEntry.getDestination() != null)
+                .map(LogEntry::getDestination).toList();
+        if(destinations.size() < 1) {
+            return Optional.empty();
+        }
+        return Optional.of(destinations.get(destinations.size() - 1));
     }
 
     public String getDirectionName() {

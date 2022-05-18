@@ -5,7 +5,6 @@ import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.models.Point;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,28 +15,62 @@ import static java.util.Collections.max;
 import static java.util.Collections.min;
 import static java.util.Comparator.comparing;
 
-@Getter
-@Setter
 public class Map {
-    private List<NamedPoint> points;
+    private final List<Location> locations;
+    private final List<LogEntry> log;
+    @Getter
     private final int WIDTH = 900;
+    @Getter
     private final int HEIGHT = 600;
-    private double scale;
-    private Point partyMapCoords;
 
-    public Map getMap(List<Location> locations, List<LogEntry> log) {
-        Point offset = centerOnOrigin(locations);
-        IPoint origin = getOrigin(locations);
-        IPoint partyPositionWorld = getPartyPositionWorld(log, origin);
-        List<IPoint> locationsAndPartyPosition = Stream.concat(Stream.of(partyPositionWorld), locations.stream()).toList();
-        double scale = getMapScale(locationsAndPartyPosition, origin);
+
+    public Map(List<Location> locations, List<LogEntry> log) {
+        this.locations = locations;
+        this.log = log;
+    }
+
+    public List<NamedPoint> getPoints() {
+        double scale = getScale();
+        Point offset = centerOnOrigin();
         List<NamedPoint> points = locations.stream()
                 .map(location -> getNamedPoint(location, offset, scale))
                 .collect(Collectors.toList());
-        this.setPartyMapCoords(getPartyPositionMap(log, offset, scale, origin));
-        this.setPoints(points);
-        this.setScale(scale);
-        return this;
+        return points;
+    }
+
+    public Point getPartyMapCoords() {
+        Point offset = centerOnOrigin();
+        double scale = getScale();
+        Point partyPosition = getPartyPositionWorld();
+        int x = (int) ((WIDTH / (2 * scale) + offset.getX() + partyPosition.getX()) * scale);
+        int y = (int) ((HEIGHT / (2 * scale) + offset.getY() - partyPosition.getY()) * scale);
+        return new Point(x, y);
+    }
+
+    public double getScale() {
+        IPoint origin = getOrigin();
+        IPoint partyPositionWorld = getPartyPositionWorld();
+        List<IPoint> locationsAndPartyPosition = Stream.concat(Stream.of(partyPositionWorld), locations.stream()).toList();
+
+        if (locationsAndPartyPosition.size() < 2) {
+            return 1;
+        }
+
+        int mapMargin = 50 * 2;
+        IPoint limitEast = max(locationsAndPartyPosition, comparing(IPoint::getX));
+        IPoint limitWest = min(locationsAndPartyPosition, comparing(IPoint::getX));
+        IPoint limitNorth = max(locationsAndPartyPosition, comparing(IPoint::getY));
+        IPoint limitSouth = min(locationsAndPartyPosition, comparing(IPoint::getY));
+        double boundX = 2 * Math.max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
+        double boundY = 2 * Math.max(limitNorth.calculateDistanceTo(origin), limitSouth.calculateDistanceTo(origin));
+        if(boundX < 0.1 && boundY < 0.1) {return 1;}
+        double scaleX = (WIDTH - mapMargin) / boundX;
+        double scaleY = (HEIGHT - mapMargin) / boundY;
+        return Math.min(scaleX, scaleY);
+    }
+
+    public String getCurrentDestinationName() {
+        return LogEntry.getCurrentDestination(log).map(Location::getName).orElse(null);
     }
 
     private NamedPoint getNamedPoint(Location location, Point offset, double scale) {
@@ -48,7 +81,7 @@ public class Map {
                 .build();
     }
 
-    private Point centerOnOrigin(List<Location> locations) {
+    private Point centerOnOrigin() {
         Optional<Point> origin = locations.stream()
                 .filter(Location::isOrigin)
                 .map(l -> new Point(-l.getX(), l.getY()))
@@ -58,25 +91,7 @@ public class Map {
 
     }
 
-    private double getMapScale(List<IPoint> locations, IPoint origin) {
-        if (locations.size() < 2) {
-            return 1;
-        }
-
-        int mapMargin = 50 * 2;
-        IPoint limitEast = max(locations, comparing(IPoint::getX));
-        IPoint limitWest = min(locations, comparing(IPoint::getX));
-        IPoint limitNorth = max(locations, comparing(IPoint::getY));
-        IPoint limitSouth = min(locations, comparing(IPoint::getY));
-        double boundX = 2 * Math.max(limitEast.calculateDistanceTo(origin), limitWest.calculateDistanceTo(origin));
-        double boundY = 2 * Math.max(limitNorth.calculateDistanceTo(origin), limitSouth.calculateDistanceTo(origin));
-        if(boundX < 0.1 && boundY < 0.1) {return 1;}
-        double scaleX = (WIDTH - mapMargin) / boundX;
-        double scaleY = (HEIGHT - mapMargin) / boundY;
-        return Math.min(scaleX, scaleY);
-    }
-
-    private IPoint getOrigin(List<Location> locations) {
+    private IPoint getOrigin() {
         Optional<Location> origin = locations.stream().filter(Location::isOrigin).findFirst();
         if (origin.isPresent()) {
             return origin.get();
@@ -85,15 +100,8 @@ public class Map {
         }
     }
 
-
-    private Point getPartyPositionMap(List<LogEntry> log, Point offset, double scale, IPoint origin) {
-        Point partyPosition = getPartyPositionWorld(log, origin);
-        int x = (int) ((WIDTH / (2 * scale) + offset.getX() + partyPosition.getX()) * scale);
-        int y = (int) ((HEIGHT / (2 * scale) + offset.getY() - partyPosition.getY()) * scale);
-        return new Point(x, y);
-    }
-
-    private Point getPartyPositionWorld(List<LogEntry> log, IPoint origin) {
+    private Point getPartyPositionWorld() {
+        IPoint origin = getOrigin();
         Point partyPosition = new Point();
         if (log.size() > 0) {
             partyPosition.setLocation(LogEntry.sumPositionalDelta(log));

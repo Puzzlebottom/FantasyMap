@@ -26,7 +26,7 @@ public class LocationController {
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
         List<LogEntry> logEntries = logEntryRepository.findAll();
-        Map map = new Map().getMap(locations, logEntries);
+        Map map = new Map(locations, logEntries);
         model.addAttribute("map", map);
         TravelLog travelLog = new TravelLog(logEntries);
         model.addAttribute("travelLog", travelLog);

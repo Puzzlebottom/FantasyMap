@@ -2,25 +2,19 @@ package com.conor.FantasyMap.presenters;
 
 import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
-import com.conor.FantasyMap.presenters.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
 import java.util.List;
 
-import static java.util.Collections.*;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MapTest {
-
-    @InjectMocks
-    Map map;
 
     @Mock
     Location origin;
@@ -51,23 +45,23 @@ class MapTest {
 
     @Test
     void getMapShouldConvertLocationsIntoNamedPoints() {
-        assertThat(map.getMap(List.of(origin), List.of()).getPoints().size()).isEqualTo(1);
+        assertThat(new Map(List.of(origin), List.of()).getPoints().size()).isEqualTo(1);
     }
 
     @Test
     void getMapShouldCenterOnOriginLocation() {
-        assertThat(map.getMap(List.of(origin), List.of()).getPoints().get(0).getXCoord()).isEqualTo(450);
-        assertThat(map.getMap(List.of(origin), List.of()).getPoints().get(0).getYCoord()).isEqualTo(300);
+        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getXCoord()).isEqualTo(450);
+        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getYCoord()).isEqualTo(300);
     }
 
     @Test
     void getMapShouldNotThrowExceptionWhenNoLocationsExist() {
-        map.getMap(emptyList(), emptyList());
+        new Map(emptyList(), emptyList());
     }
 
     @Test
     void getMapShouldScaleToIncludeAllNamedPoints() {
-        assertThat(map.getMap(List.of(origin, notOrigin), List.of()).getScale()).isEqualTo(0.5);
+        assertThat(new Map(List.of(origin, notOrigin), List.of()).getScale()).isEqualTo(0.5);
     }
 
     @Test
@@ -76,7 +70,7 @@ class MapTest {
         when(logThree.getDeltaX()).thenReturn(1000.0);
         when(logThree.getDeltaY()).thenReturn(1000.0);
 
-        Map renderedMap = map.getMap(List.of(origin), List.of(logThree));
+        Map renderedMap = new Map(List.of(origin), List.of(logThree));
         assertThat(renderedMap.getPartyMapCoords().getX()).isLessThan(900 - 50);
         assertThat(renderedMap.getPartyMapCoords().getY()).isLessThan(600 - 50);
         assertThat(renderedMap.getPartyMapCoords().getX()).isGreaterThan(50);
@@ -85,8 +79,8 @@ class MapTest {
 
     @Test
     void getMapShouldSetPartyCoordsToOriginWithNoLog() {
-        assertThat(map.getMap(List.of(origin), List.of()).getPartyMapCoords().getX()).isEqualTo(450);
-        assertThat(map.getMap(List.of(origin), List.of()).getPartyMapCoords().getY()).isEqualTo(300);
+        assertThat(new Map(List.of(origin), List.of()).getPartyMapCoords().getX()).isEqualTo(450);
+        assertThat(new Map(List.of(origin), List.of()).getPartyMapCoords().getY()).isEqualTo(300);
     }
 
     @Test
@@ -94,9 +88,24 @@ class MapTest {
         Location locationCausingScaleToBeOne = new Location();
         locationCausingScaleToBeOne.setX(0);
         locationCausingScaleToBeOne.setY(250);
-        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getX()).isEqualTo(475);
-        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getY()).isEqualTo(275);
-        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getX()).isEqualTo(425);
-        assertThat(map.getMap(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getY()).isEqualTo(325);
+        assertThat(new Map(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getX()).isEqualTo(475);
+        assertThat(new Map(List.of(origin, locationCausingScaleToBeOne), List.of(logOne)).getPartyMapCoords().getY()).isEqualTo(275);
+        assertThat(new Map(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getX()).isEqualTo(425);
+        assertThat(new Map(List.of(origin, locationCausingScaleToBeOne), List.of(logOne, logTwo)).getPartyMapCoords().getY()).isEqualTo(325);
+    }
+
+    @Test
+    void getMapShouldProvideCurrentDestination() {
+        LogEntry logEntry = new LogEntry();
+        Location bastion = new Location();
+        bastion.setName("Bastion");
+        logEntry.setDestination(bastion);
+
+        assertThat(new Map(List.of(), List.of(logEntry)).getCurrentDestinationName()).isEqualTo("Bastion");
+    }
+
+    @Test
+    void getMapShouldReturnNullWhenNoLogEntriesHaveDestinations() {
+        assertThat(new Map(List.of(), List.of()).getCurrentDestinationName()).isEqualTo(null);
     }
 }
