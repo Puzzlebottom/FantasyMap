@@ -29,7 +29,7 @@ jobs:
           POSTGRES_USER: "app_dev"
           POSTGRES_PASSWORD: "e1bc9e7f864d"
         volumes:
-          - ./initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
+          - initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
 
     steps:
     - uses: actions/checkout@v3
