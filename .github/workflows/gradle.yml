@@ -30,6 +30,11 @@ jobs:
           POSTGRES_PASSWORD: "e1bc9e7f864d"
         volumes:
           - initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
