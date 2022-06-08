@@ -5,7 +5,12 @@ import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.models.Point;
 import lombok.Getter;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHull2D;
+import org.apache.commons.math3.geometry.euclidean.twod.hull.ConvexHullGenerator2D;
+import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +19,8 @@ import java.util.stream.Stream;
 import static java.util.Collections.max;
 import static java.util.Collections.min;
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 public class Map {
     private final List<Location> locations;
@@ -34,7 +41,7 @@ public class Map {
         Point offset = centerOnOrigin();
         List<NamedPoint> points = locations.stream()
                 .map(location -> getNamedPoint(location, offset, scale))
-                .collect(Collectors.toList());
+                .collect(toList());
         return points;
     }
 
@@ -71,6 +78,19 @@ public class Map {
 
     public String getCurrentDestinationName() {
         return LogEntry.getCurrentDestination(log).map(Location::getName).orElse(null);
+    }
+
+    public String getLandPolygonPoints() {
+        List<Vector2D> locationVectors = getPoints().stream()
+                .map(l -> new Vector2D(l.getXCoord(), l.getYCoord()))
+                .collect(toList());
+
+        ConvexHullGenerator2D convexHullGenerator = new MonotoneChain(true);
+        ConvexHull2D convexHull = convexHullGenerator.generate(locationVectors);
+
+        return Arrays.stream(convexHull.getVertices())
+                .map(vertex -> "%s,%s".formatted(vertex.getX(), vertex.getY()))
+                .collect(joining(" "));
     }
 
     private NamedPoint getNamedPoint(Location location, Point offset, double scale) {
