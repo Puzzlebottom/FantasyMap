@@ -31,10 +31,11 @@ jobs:
         volumes:
           - initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -p 5433
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      
 
     steps:
     - uses: actions/checkout@v3
