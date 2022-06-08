@@ -20,6 +20,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      app-postgres:
+        image: "postgres:13"
+        ports:
+          - "5433:5432"
+        env:
+          POSTGRES_USER: "app_dev"
+          POSTGRES_PASSWORD: "e1bc9e7f864d"
+        volumes:
+          - ./initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
 
     steps:
     - uses: actions/checkout@v3
