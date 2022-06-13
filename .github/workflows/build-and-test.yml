@@ -26,8 +26,8 @@ jobs:
         ports:
           - "5432:5432"
         env:
-          POSTGRES_USER: "app_test"
-          POSTGRES_PASSWORD: "$2a$10$.9aQoBFEcx26Nf.krp7zWe0KXiVHPfVPlHjPiYS0GcHV2iA2kGDKW "
+          POSTGRES_USER: "app_dev"
+          POSTGRES_PASSWORD: "e1bc9e7f864d"
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
