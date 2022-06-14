@@ -26,14 +26,11 @@ jobs:
         ports:
           - "5432:5432"
         env:
-          POSTGRES_USER: "app_dev"
+          POSTGRES_USER: "app_test"
           POSTGRES_PASSWORD: "e1bc9e7f864d"
-        options: -v ${{ github.workspace }}/localDBSetup:/docker-entrypoint-initdb.d
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
