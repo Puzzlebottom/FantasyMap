@@ -30,14 +30,11 @@ jobs:
           POSTGRES_PASSWORD: "e1bc9e7f864d"
         volumes:
           - ${{ github.workspace }}/initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 25s
-          --health-timeout 25s
-          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
