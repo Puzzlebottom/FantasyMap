@@ -38,7 +38,5 @@ jobs:
         distribution: 'temurin'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
-      env:
-        SPRING_PROFILES_ACTIVE: "ci"
       with:
         arguments: build
