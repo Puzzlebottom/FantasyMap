@@ -8,4 +8,4 @@ services:
       POSTGRES_USER: "app_dev"
       POSTGRES_PASSWORD: "e1bc9e7f864d"
     volumes:
-      - ./initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
+      - ./localDBSetup:/docker-entrypoint-initdb.d
