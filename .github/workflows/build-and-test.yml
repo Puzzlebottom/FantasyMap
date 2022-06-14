@@ -32,8 +32,8 @@ jobs:
           - ${{ github.workspace }}/initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+          --health-interval 25s
+          --health-timeout 25s
           --health-retries 5
 
     steps:
