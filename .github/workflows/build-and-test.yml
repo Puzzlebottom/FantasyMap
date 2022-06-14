@@ -28,12 +28,13 @@ jobs:
         env:
           POSTGRES_USER: "app_dev"
           POSTGRES_PASSWORD: "e1bc9e7f864d"
+        volumes:
+          - ${{ github.workspace }}/initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          -v ${{ github.workspace }}/initializePostgres.local.sql:/docker-entrypoint-initdb.d/initializePostres.sql
 
     steps:
     - uses: actions/checkout@v3
