@@ -13,7 +13,6 @@ import org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Collections.max;
@@ -80,9 +79,12 @@ public class Map {
         return LogEntry.getCurrentDestination(log).map(Location::getName).orElse(null);
     }
 
-    public String getLandPolygonPoints() {
-        List<Vector2D> locationVectors = getPoints().stream()
-                .map(l -> new Vector2D(l.getXCoord(), l.getYCoord()))
+    public String getFogOfWarPolygonPoints() {
+        Stream<NamedPoint> locations = getPoints().stream();
+        Stream<IPoint> party = Stream.of(getPartyMapCoords());
+        Stream<IPoint> partyAndLocations = Stream.concat(party, locations);
+        List<Vector2D> locationVectors = partyAndLocations
+                .map(l -> new Vector2D(l.getX(), l.getY()))
                 .collect(toList());
 
         ConvexHullGenerator2D convexHullGenerator = new MonotoneChain(true);
@@ -96,8 +98,8 @@ public class Map {
     private NamedPoint getNamedPoint(Location location, Point offset, double scale) {
         return NamedPoint.builder()
                 .name(location.getName())
-                .xCoord((int) ((WIDTH / (2 * scale) + offset.getX() + location.getX()) * scale))
-                .yCoord((int) ((HEIGHT / (2 * scale) + offset.getY() - location.getY()) * scale))
+                .x((int) ((WIDTH / (2 * scale) + offset.getX() + location.getX()) * scale))
+                .y((int) ((HEIGHT / (2 * scale) + offset.getY() - location.getY()) * scale))
                 .build();
     }
 

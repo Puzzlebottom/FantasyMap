@@ -12,7 +12,6 @@ public class FantasyMapApplication {
 
 }
 
-//TODO: stretch goal: use github actions to run the tests on every push (CI)
 //TODO: Readme
 //TODO: implement new marker graphics and distinguish origin, destination
 

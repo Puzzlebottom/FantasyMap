@@ -1,5 +1,6 @@
 package com.conor.FantasyMap.presenters;
 
+import com.conor.FantasyMap.models.IPoint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,14 +10,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class NamedPoint {
+public class NamedPoint implements IPoint {
     private String name;
-    private int xCoord;
-    private int yCoord;
+    private double x;
+    private double y;
 
-    public NamedPoint setCoords(int x, int y) {
-        this.setXCoord(x);
-        this.setYCoord(-y);
-        return this;
+    @Override
+    public void setX(double value) {
+
+    }
+
+    @Override
+    public void setY(double value) {
+
     }
 }

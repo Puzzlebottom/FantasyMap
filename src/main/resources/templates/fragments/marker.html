@@ -4,7 +4,7 @@
 <body>
     <circle th:fragment="marker"
             th:each="point: ${map.points}"
-            th:attr="cx=${point.xCoord}, cy=${point.yCoord}"
+            th:attr="cx=${point.x}, cy=${point.y}"
             r="5"
             data-test-id="location"
             fill="red">
@@ -13,7 +13,7 @@
           th:fragment="marker"
           th:each="point: ${map.points}"
           th:text="${point.name}"
-          th:attr="x=${point.xCoord}, y=${point.yCoord} + 20">
+          th:attr="x=${point.x}, y=${point.y} + 20">
     </text>
 </body>
 </html>

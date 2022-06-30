@@ -50,8 +50,8 @@ class MapTest {
 
     @Test
     void getMapShouldCenterOnOriginLocation() {
-        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getXCoord()).isEqualTo(450);
-        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getYCoord()).isEqualTo(300);
+        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getX()).isEqualTo(450);
+        assertThat(new Map(List.of(origin), List.of()).getPoints().get(0).getY()).isEqualTo(300);
     }
 
     @Test

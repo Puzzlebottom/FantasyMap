@@ -38,10 +38,10 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         Elements destinationOptions = doc.select("[data-test-id=\"destination\"]");
 
         assertThat(circles.size()).isEqualTo(2);
-        assertThat(circles.get(0).attr("cx")).isEqualTo("450");
-        assertThat(circles.get(0).attr("cy")).isEqualTo("300");
-        assertThat(circles.get(1).attr("cx")).isEqualTo("319");
-        assertThat(circles.get(1).attr("cy")).isEqualTo("82");
+        assertThat(circles.get(0).attr("cx")).isEqualTo("450.0");
+        assertThat(circles.get(0).attr("cy")).isEqualTo("300.0");
+        assertThat(circles.get(1).attr("cx")).isEqualTo("319.0");
+        assertThat(circles.get(1).attr("cy")).isEqualTo("82.0");
 
         assertThat(destinationOptions.size()).isEqualTo(2);
         assertThat(destinationOptions.get(0).text()).isEqualTo("Bastion");
