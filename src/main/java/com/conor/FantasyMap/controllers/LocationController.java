@@ -22,6 +22,7 @@ public class LocationController {
     private final LocationRepository locationRepository;
     private final LogEntryRepository logEntryRepository;
 
+    @Transactional
     @GetMapping("/")
     public String map(Model model) {
         List<Location> locations = locationRepository.findAll();
@@ -33,18 +34,21 @@ public class LocationController {
         return "map";
     }
 
+    @Transactional
     @GetMapping("/locations")
     @ResponseBody
     public List<Location> getAllLocations() {
         return locationRepository.findAll();
     }
 
+    @Transactional
     @GetMapping("/locations/{name}")
     @ResponseBody
     public Location getLocationByName(@PathVariable String name) {
         return locationRepository.findLocationByName(name);
     }
 
+    @Transactional
     @DeleteMapping("/locations/{name}")
     @ResponseBody
     public ResponseEntity<Object> deleteLocation(@PathVariable String name) {
@@ -52,6 +56,7 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
     @GetMapping("/locations/{originName}?distanceTo={destinationName}")
     @ResponseBody
     public String getCourse(@PathVariable String originName, @PathVariable String destinationName) {
@@ -62,6 +67,7 @@ public class LocationController {
         return destinationName + " is " + distance + " miles " + direction + " from " + originName;
     }
 
+    @Transactional
     @PostMapping("/locations")
     @ResponseBody
     public ResponseEntity<Object> addLocation(@RequestBody Location location) {
@@ -69,6 +75,7 @@ public class LocationController {
         return ResponseEntity.ok().build();
     }
 
+    @Transactional
     @PostMapping(path="/locations/relative",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public String addRelativeLocation(NewLocationRequest request) {
@@ -80,6 +87,7 @@ public class LocationController {
         return "redirect:/";
     }
 
+    @Transactional
     @PostMapping("/locations/{name}/info")
     @ResponseBody
     public ResponseEntity<Object> addLocationInfo(@PathVariable String name, @RequestBody String info) {

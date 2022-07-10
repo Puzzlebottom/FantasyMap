@@ -21,6 +21,7 @@ public class LogEntryController {
     private final LogEntryRepository logEntryRepository;
     private final LocationRepository locationRepository;
 
+    @Transactional
     @PostMapping(path="/log-entries/free",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public String moveFree(MoveRequest request) {
@@ -29,6 +30,7 @@ public class LogEntryController {
         return "redirect:/";
     }
 
+    @Transactional
     @PostMapping(path="/log-entries/destination",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public String moveTo(MoveToLocationRequest request) {
