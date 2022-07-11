@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -49,11 +50,14 @@ public class LocationController {
     }
 
     @Transactional
-    @DeleteMapping("/locations/{name}")
-    @ResponseBody
-    public ResponseEntity<Object> deleteLocation(@PathVariable String name) {
-        locationRepository.deleteLocationByName(name);
-        return ResponseEntity.ok().build();
+    @PostMapping(path="/locations/delete",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String deleteLocation(DeleteLocationRequest request) {
+        String locationName = request.getLocationName();
+        Long locationId = locationRepository.findLocationByName(locationName).getId();
+        logEntryRepository.removeDestinationRef(locationId);
+        locationRepository.deleteByName(locationName);
+        return "redirect:/";
     }
 
     @Transactional

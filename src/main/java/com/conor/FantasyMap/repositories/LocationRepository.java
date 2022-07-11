@@ -9,5 +9,5 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
     List<Location> findAll();
     Location findLocationByName(String locationName);
     Location findLocationByIsDestinationIsTrue();
-    void deleteLocationByName(String locationName);
+    void deleteByName(String locationName);
 }

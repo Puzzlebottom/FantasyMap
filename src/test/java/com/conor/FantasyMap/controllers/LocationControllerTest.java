@@ -32,7 +32,9 @@ class LocationControllerTest {
     void getAllLocationsShouldReturnLocations() {
         Location mockLocation = mock(Location.class);
         when(locationRepository.findAll()).thenReturn(List.of(mockLocation));
+
         List<Location> allLocations = locationController.getAllLocations();
+
         assertThat(allLocations).contains(mockLocation);
     }
 

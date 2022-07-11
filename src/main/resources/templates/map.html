@@ -61,7 +61,6 @@
                 >
                 </option>
             </select>
-
             <br>
             <label>
                 Move
@@ -119,8 +118,17 @@
                         th:text="${origin.getName()}">
                 </option>
             </select>
-
             <input type="submit" value="ADD LOCATION">
+        </form>
+        <form method="post" action="/locations/delete">
+            <select name="locationName">
+                <option th:each="location: ${map.getPoints()}"
+                        th:value="${location.getName()}"
+                        th:text="${location.getName()}"
+                >
+                </option>
+            </select>
+            <input type="submit" value="DELETE LOCATION">
         </form>
     </tool-panel>
     <log-panel>

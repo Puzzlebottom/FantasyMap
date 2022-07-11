@@ -44,5 +44,4 @@ public class LogEntry {
         CardinalDirection cardinalDirection = CardinalDirection.ofAngle((int) round(theta) + 90);
         return cardinalDirection.getName();
     }
-
 }

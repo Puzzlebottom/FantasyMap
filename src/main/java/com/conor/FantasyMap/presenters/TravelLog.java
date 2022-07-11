@@ -1,10 +1,12 @@
 package com.conor.FantasyMap.presenters;
 
+import com.conor.FantasyMap.models.Location;
 import com.conor.FantasyMap.models.LogEntry;
 import lombok.AllArgsConstructor;
 import org.hibernate.cfg.NotYetImplementedException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.conor.FantasyMap.models.LogEntryType.COURSE;
 import static com.conor.FantasyMap.models.LogEntryType.DESTINATION;
