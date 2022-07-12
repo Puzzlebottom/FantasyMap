@@ -19,10 +19,10 @@ public class TravelLogIntegrationTest extends IntegrationTest {
         testHelper.givenPartyHasMoved("SE", 24);
 
         Document doc = testHelper.getDoc();
-        Elements li = doc.select("li");
+        Elements entries = doc.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
-        assertThat(li.size()).isEqualTo(2);
-        assertThat(li.get(0).text()).isEqualTo("Party travelled north for 24 hours");
+        assertThat(entries.size()).isEqualTo(2);
+        assertThat(entries.get(0).text()).isEqualTo("Party travelled north for 24 hours");
     }
 
     @Test
@@ -32,9 +32,9 @@ public class TravelLogIntegrationTest extends IntegrationTest {
         testHelper.givenPartyHasMovedToDestination(allLocationNames.get(0), 24);
 
         Document doc = testHelper.getDoc();
-        Elements li = doc.select("li");
+        Elements entries = doc.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
-        assertThat(li.size()).isEqualTo(1);
-        assertThat(li.get(0).text()).isEqualTo("Party travelled 24 hours toward Bastion");
+        assertThat(entries.size()).isEqualTo(1);
+        assertThat(entries.get(0).text()).isEqualTo("Party travelled 24 hours toward Bastion");
     }
 }

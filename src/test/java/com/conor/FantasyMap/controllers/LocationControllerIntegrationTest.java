@@ -72,15 +72,15 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         testHelper.givenPartyHasMovedToDestination("Bastion", 8);
 
         Document doc = testHelper.getDoc();
-        Elements li = doc.select("li");
+        Elements entries = doc.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
-        assertThat(li.get(0).text()).isEqualTo("Party travelled 8 hours toward Bastion");
+        assertThat(entries.get(0).text()).isEqualTo("Party travelled 8 hours toward Bastion");
 
         testHelper.deleteLocation("Bastion");
 
         Document doc2 = testHelper.getDoc();
-        Elements li2 = doc2.select("li");
+        Elements entries2 = doc2.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
-        assertThat(li2.get(0).text()).isEqualTo("Party travelled east for 8 hours");
+        assertThat(entries2.get(0).text()).isEqualTo("Party travelled east for 8 hours");
     }
 }

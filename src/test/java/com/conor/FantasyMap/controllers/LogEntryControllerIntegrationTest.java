@@ -20,10 +20,10 @@ class LogEntryControllerIntegrationTest extends IntegrationTest {
         testHelper.exchange("/log-entries/delete-top-entry", POST, null);
 
         Document doc = testHelper.getDoc();
-        Elements li = doc.select("li");
+        Elements entries = doc.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
-        assertThat(li.size()).isEqualTo(2);
-        assertThat(li.get(0).text()).isEqualTo("Party travelled north for 8 hours");
-        assertThat(li.get(1).text()).isEqualTo("Party travelled east for 12 hours");
+        assertThat(entries.size()).isEqualTo(2);
+        assertThat(entries.get(0).text()).isEqualTo("Party travelled north for 8 hours");
+        assertThat(entries.get(1).text()).isEqualTo("Party travelled east for 12 hours");
     }
 }
