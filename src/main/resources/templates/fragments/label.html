@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <text text-anchor="middle"
+          th:fragment="label"
+          th:each="point: ${map.points}"
+          th:text="${point.name}"
+          th:attr="x=${point.x}, y=${point.y} + 10">
+    </text>
+</body>
+</html>
