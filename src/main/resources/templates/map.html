@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="map.css"/>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", () => {
+        [...document.getElementsByClassName("tab-button")].map((el) => el.addEventListener("click", (e) => {
+          e.preventDefault();
+          const panels = [...document.getElementsByClassName("tab-button")].map((el) => el.dataset.panel);
+          panels.map((id) => document.getElementById(id))
+            .map((el) => el.style.display = "none");
+          document.getElementById(e.target.dataset.panel).style.display = "block";
+        }))
+      })
+    </script>
 </head>
 <body>
 <svg xmlns='http://www.w3.org/2000/svg' th:width="${map.WIDTH}" th:height="${map.HEIGHT}">
@@ -49,7 +60,18 @@
     <g th:replace="fragments/party :: party"></g>
 </svg>
 <panel-wrapper>
-    <movement-panel>
+    <ul>
+        <li>
+            <a href="#" class="tab-button" data-panel="new-location-panel">New Location</a>
+        </li>
+        <li>
+            <a href="#" class="tab-button" data-panel="movement-panel">Movement</a>
+        </li>
+        <li>
+            <a href="#" class="tab-button" data-panel="log-panel">Travel Log</a>
+        </li>
+    </ul>
+    <movement-panel id="movement-panel">
         <form method="post" action="/log-entries/destination">
             DESTINATION
             <select name="destinationName">
@@ -93,7 +115,7 @@
             <input type="submit" value="UNDO MOVE">
         </form>
     </movement-panel>
-    <tool-panel>
+    <tool-panel id="new-location-panel">
         Create New Location
         <form method="post" action="/locations/relative">
             <input type="text" name="newLocationName" required>
@@ -131,7 +153,7 @@
             <input type="submit" value="DELETE LOCATION">
         </form>
     </tool-panel>
-    <log-panel>
+    <log-panel id="log-panel">
         <elapsed-time th:text="${travelLog.getElapsedTime()}"/>
         <ul>
             <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"></li>
