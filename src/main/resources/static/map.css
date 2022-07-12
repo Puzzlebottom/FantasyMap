@@ -51,3 +51,27 @@ elapsed-time{
     width: 50px;
     float: right;
 }
+.destination-marker{
+    animation-name: marker-spin;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+@keyframes marker-spin {
+    0%{transform: scale(1,1)}
+    6.25%{transform: scale(0.98,1)}
+    12.5%{transform: scale(0.923,1)}
+    18.75%{transform: scale(0.831,1)}
+    25%{transform: scale(0.707,1)}
+    31.25%{transform: scale(0.555,1)}
+    37.5%{transform: scale(0.382,1)}
+    43.75%{transform: scale(0.195,1)}
+    50%{transform: scale(0,1)}
+    56.25%{transform: scale(0.195,1)}
+    62.5%{transform: scale(0.382,1)}
+    68.75%{transform: scale(0.555,1)}
+    75%{transform: scale(0.707,1)}
+    81.25%{transform: scale(0.831,1)}
+    87.5%{transform: scale(0.923,1)}
+    93.75%{transform: scale(0.98,1)}
+    100%{transform: scale(1,1)}
+}
