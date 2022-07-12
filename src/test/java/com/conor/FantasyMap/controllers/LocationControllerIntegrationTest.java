@@ -53,4 +53,34 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         Document doc = testHelper.getDoc();
         assertThat(doc.body().text()).contains("Day 1, 12AM");
     }
+
+    @Test
+    void deleteLocationShouldDoSo() {
+        testHelper.givenALocationExists("Bastion");
+        testHelper.givenALocationExists("Cathedral");
+
+        assertThat(testHelper.getAllLocationNames().size()).isEqualTo(2);
+
+        testHelper.deleteLocation("Bastion");
+
+        assertThat(testHelper.getAllLocationNames().size()).isEqualTo(1);
+    }
+
+    @Test
+    void deleteLocationShouldDissociateLogEntriesFromDeletedLocation() throws IOException {
+        testHelper.givenALocationExists("Bastion");
+        testHelper.givenPartyHasMovedToDestination("Bastion", 8);
+
+        Document doc = testHelper.getDoc();
+        Elements li = doc.select("li");
+
+        assertThat(li.get(0).text()).isEqualTo("Party travelled 8 hours toward Bastion");
+
+        testHelper.deleteLocation("Bastion");
+
+        Document doc2 = testHelper.getDoc();
+        Elements li2 = doc2.select("li");
+
+        assertThat(li2.get(0).text()).isEqualTo("Party travelled east for 8 hours");
+    }
 }

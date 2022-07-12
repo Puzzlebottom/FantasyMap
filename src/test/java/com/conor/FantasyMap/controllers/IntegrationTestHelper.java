@@ -29,6 +29,17 @@ public class IntegrationTestHelper {
         return "http://localhost:" + port;
     }
 
+    public void deleteLocation(String locationName) {
+        LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("locationName", locationName);
+
+        HttpHeaders headers = httpHeadersWithAuthorization();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        restTemplate.postForObject(getBaseUri() + "/locations/delete", entity, Object.class);
+    }
+
     public void givenPartyHasMoved(String direction, int deltaHours) {
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("direction", direction);
