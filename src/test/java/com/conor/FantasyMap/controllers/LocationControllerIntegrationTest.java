@@ -34,14 +34,12 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         testHelper.givenALocationExists("Cathedral", -12, 20);
 
         Document doc = testHelper.getDoc();
-        Elements circles = doc.select("[data-test-id=\"location\"]");
-        Elements destinationOptions = doc.select("[data-test-id=\"destination\"]");
+        Elements markers = doc.getElementsByAttributeValue("data-test-id", "location");
+        Elements destinationOptions = doc.getElementsByAttributeValue("data-test-id", "destination");
 
-        assertThat(circles.size()).isEqualTo(2);
-        assertThat(circles.get(0).attr("cx")).isEqualTo("450.0");
-        assertThat(circles.get(0).attr("cy")).isEqualTo("300.0");
-        assertThat(circles.get(1).attr("cx")).isEqualTo("319.0");
-        assertThat(circles.get(1).attr("cy")).isEqualTo("82.0");
+        assertThat(markers.size()).isEqualTo(2);
+        assertThat(markers.get(0).attr("transform")).isEqualTo("translate(450.0,300.0)");
+        assertThat(markers.get(1).attr("transform")).isEqualTo("translate(319.0,82.0)");
 
         assertThat(destinationOptions.size()).isEqualTo(2);
         assertThat(destinationOptions.get(0).text()).isEqualTo("Bastion");
