@@ -20,19 +20,19 @@ panel-wrapper{
 }
 movement-panel{
     border: thin solid black;
-    display: flex;
+    display: none;
     flex-direction: column;
     margin: 0 8px 8px;
 }
 tool-panel{
     border: thin solid black;
-    display: flex;
+    display: none;
     flex-direction: column;
     margin: 0 8px;
 }
 log-panel{
     border: thin solid black;
-    display: flex;
+    display: none;
     flex-direction: column-reverse;
     flex: 1 1 0;
     overflow: scroll;

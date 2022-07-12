@@ -6,12 +6,15 @@
     <link rel="stylesheet" href="map.css"/>
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", () => {
+        const storedPanel = window.localStorage.getItem("panel");
+        if(storedPanel != null) {document.getElementById(storedPanel).style.display = "block"};
         [...document.getElementsByClassName("tab-button")].map((el) => el.addEventListener("click", (e) => {
           e.preventDefault();
           const panels = [...document.getElementsByClassName("tab-button")].map((el) => el.dataset.panel);
           panels.map((id) => document.getElementById(id))
             .map((el) => el.style.display = "none");
           document.getElementById(e.target.dataset.panel).style.display = "block";
+          window.localStorage.setItem("panel", e.target.dataset.panel);
         }))
       })
     </script>
