@@ -113,7 +113,7 @@ public class Map {
 
     }
 
-    private IPoint getOrigin() {
+    public IPoint getOrigin() {
         Optional<Location> origin = locations.stream().filter(Location::isOrigin).findFirst();
         if (origin.isPresent()) {
             return origin.get();

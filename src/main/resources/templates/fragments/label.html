@@ -5,7 +5,8 @@
           th:fragment="label"
           th:each="point: ${map.points}"
           th:text="${point.name}"
-          th:attr="x=${point.x}, y=${point.y} + 10">
+          th:attr="x=${point.x}, y=${point.y} + 10"
+          th:classappend="${map.getOrigin().getName() == point.getName()} ? 'origin-label'">
     </text>
 </body>
 </html>
