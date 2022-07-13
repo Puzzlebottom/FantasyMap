@@ -149,8 +149,9 @@
         <form method="post" action="/locations/delete">
             <select name="locationName">
                 <option th:each="location: ${map.getPoints()}"
-                        th:value="${location.getName()}"
-                        th:text="${location.getName()}"
+                        th:value="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
+                        th:text="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
+                        th:style="${location.getName() == map.getOrigin().getName()} ? 'display:none'"
                 >
                 </option>
             </select>

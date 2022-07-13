@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.*;
 
 class LocationControllerTest {
@@ -138,5 +139,20 @@ class LocationControllerTest {
         List<Location> allLocations = locationCaptor.getAllValues();
         assertThat(allLocations.size()).isEqualTo(1);
         assertThat(allLocations.get(0).isDestination()).isEqualTo(true);
+    }
+
+    @Test
+    void deleteLocationShouldNotDeleteOrigin() throws Exception {
+        Location origin = new Location();
+        origin.setName("Bastion");
+        origin.setId(1L);
+        DeleteLocationRequest request = new DeleteLocationRequest();
+        request.setLocationName(origin.getName());
+        when(locationRepository.findLocationByName(origin.getName())).thenReturn(origin);
+
+        locationController.deleteLocation(request);
+
+        verify(logEntryRepository, times(0)).removeDestinationRef(origin.getId());
+        verify(locationRepository, times(0)).deleteByName(origin.getName());
     }
 }

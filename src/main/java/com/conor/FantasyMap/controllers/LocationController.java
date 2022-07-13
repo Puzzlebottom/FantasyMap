@@ -1,6 +1,7 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.*;
+import com.conor.FantasyMap.models.Point;
 import com.conor.FantasyMap.presenters.Map;
 import com.conor.FantasyMap.presenters.TravelLog;
 import com.conor.FantasyMap.repositories.LocationRepository;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,9 +55,18 @@ public class LocationController {
     @Transactional
     @PostMapping(path="/locations/delete",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public String deleteLocation(DeleteLocationRequest request) {
+    public String deleteLocation(DeleteLocationRequest request) throws Exception {
         String locationName = request.getLocationName();
-        Long locationId = locationRepository.findLocationByName(locationName).getId();
+        Location location = locationRepository.findLocationByName(locationName);
+        try {
+            if(location.isOrigin()) {
+                throw new Exception("Cannot delete origin location");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "redirect:/";
+        }
+        Long locationId = location.getId();
         logEntryRepository.removeDestinationRef(locationId);
         locationRepository.deleteByName(locationName);
         return "redirect:/";

@@ -113,12 +113,15 @@ public class Map {
 
     }
 
-    public IPoint getOrigin() {
+    public Location getOrigin() {
         Optional<Location> origin = locations.stream().filter(Location::isOrigin).findFirst();
         if (origin.isPresent()) {
             return origin.get();
         } else {
-            return new Point(0, 0);
+            Location location = new Location();
+            location.setX(0.0);
+            location.setY(0.0);
+            return location;
         }
     }
 

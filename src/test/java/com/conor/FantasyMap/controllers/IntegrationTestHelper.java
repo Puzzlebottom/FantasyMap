@@ -69,6 +69,7 @@ public class IntegrationTestHelper {
         location.setName(name);
         location.setX(x);
         location.setY(y);
+        location.setOrigin(false);
 
         ResponseEntity<Object> response = exchange("/locations", POST, location);
         if(!response.getStatusCode().is2xxSuccessful()) {
