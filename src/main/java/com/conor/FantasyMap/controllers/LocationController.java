@@ -92,6 +92,20 @@ public class LocationController {
     }
 
     @Transactional
+    @PostMapping(path="/locations/party",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String addLocationAtPartyPosition(NewLocationRequest request) {
+        List<LogEntry> entries = logEntryRepository.findAll();
+        IPoint partyPosition = entries != null ? LogEntry.sumPositionalDelta(entries) : new Point(0,0);
+        Location newLocation = new Location();
+        newLocation.setName(request.getNewLocationName());
+        newLocation.setX(partyPosition.getX());
+        newLocation.setY(partyPosition.getY());
+        locationRepository.save(newLocation);
+        return "redirect:/";
+    }
+
+    @Transactional
     @PostMapping("/locations/{name}/info")
     @ResponseBody
     public ResponseEntity<Object> addLocationInfo(@PathVariable String name, @RequestBody String info) {

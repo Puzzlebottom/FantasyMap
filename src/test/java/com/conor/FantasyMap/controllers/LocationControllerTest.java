@@ -1,7 +1,9 @@
 package com.conor.FantasyMap.controllers;
 
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.LogEntry;
 import com.conor.FantasyMap.repositories.LocationRepository;
+import com.conor.FantasyMap.repositories.LogEntryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -22,6 +24,9 @@ class LocationControllerTest {
 
     @Mock
     LocationRepository locationRepository;
+
+    @Mock
+    LogEntryRepository logEntryRepository;
 
     @BeforeEach
     void setup() {
@@ -70,6 +75,37 @@ class LocationControllerTest {
         assertThat(locationCaptor.getValue().getName()).isEqualTo("Cathedral");
         assertThat(locationCaptor.getValue().getX()).isEqualTo(-71.0);
         assertThat(locationCaptor.getValue().getY()).isEqualTo(71.0);
+    }
+
+    @Test
+    void addLocationAtPartyPositionShouldSaveALocationWithCoordinates() {
+        NewLocationRequest request = new NewLocationRequest();
+        request.setNewLocationName("Bastion");
+        when(logEntryRepository.findAll()).thenReturn(List.of());
+
+        locationController.addLocationAtPartyPosition(request);
+
+        verify(locationRepository).save(locationCaptor.capture());
+        assertThat(locationCaptor.getValue().getName()).isEqualTo("Bastion");
+        assertThat(locationCaptor.getValue().getX()).isEqualTo(0.0);
+        assertThat(locationCaptor.getValue().getY()).isEqualTo(0.0);
+    }
+
+    @Test
+    void addLocationAtPartyPositionShouldCalculateCoordinatesFromLogEntries() {
+        NewLocationRequest request = new NewLocationRequest();
+        request.setNewLocationName("Bastion");
+        LogEntry entry = new LogEntry();
+        entry.setDeltaX(49);
+        entry.setDeltaY(-81);
+        when(logEntryRepository.findAll()).thenReturn(List.of(entry));
+
+        locationController.addLocationAtPartyPosition(request);
+
+        verify(locationRepository).save(locationCaptor.capture());
+        assertThat(locationCaptor.getValue().getName()).isEqualTo("Bastion");
+        assertThat(locationCaptor.getValue().getX()).isEqualTo(49.0);
+        assertThat(locationCaptor.getValue().getY()).isEqualTo(-81.0);
     }
 
     @Test
