@@ -43,6 +43,15 @@ public class LogEntryController {
     }
 
     @Transactional
+    @PostMapping(path="/log-entries/rest",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String restInPlace(RestRequest request) {
+        LogEntry logEntry = LogEntryFactory.createLogEntryForRest(request.getDeltaHours());
+        logEntryRepository.save(logEntry);
+        return "redirect:/";
+    }
+
+    @Transactional
     @PostMapping(path="/log-entries/delete-top-entry")
     public String undoMove() {
         LogEntry topEntry = logEntryRepository.findFirstByOrderByIdDesc();

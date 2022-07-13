@@ -1,5 +1,7 @@
 package com.conor.FantasyMap.models;
 
+import static com.conor.FantasyMap.models.LogEntryType.*;
+
 public class LogEntryFactory {
     private static final int SPEED_PER_HOUR = 3;
 
@@ -13,7 +15,7 @@ public class LogEntryFactory {
         logEntry.setDeltaX(deltaX);
         logEntry.setDeltaY(deltaY);
         logEntry.setDeltaHours(deltaHours);
-        logEntry.setType(LogEntryType.COURSE);
+        logEntry.setType(COURSE);
         return logEntry;
     }
 
@@ -30,8 +32,17 @@ public class LogEntryFactory {
         logEntry.setDeltaX(deltaX);
         logEntry.setDeltaY(deltaY);
         logEntry.setDeltaHours(deltaHours);
-        logEntry.setType(LogEntryType.DESTINATION);
+        logEntry.setType(DESTINATION);
         logEntry.setDestination(destination);
+        return logEntry;
+    }
+
+    public static LogEntry createLogEntryForRest(int deltaHours) {
+        LogEntry logEntry = new LogEntry();
+        logEntry.setDeltaHours(deltaHours);
+        logEntry.setDeltaX(0.0);
+        logEntry.setDeltaY(0.0);
+        logEntry.setType(REST);
         return logEntry;
     }
 }

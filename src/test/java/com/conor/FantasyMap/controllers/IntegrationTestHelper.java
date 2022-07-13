@@ -1,6 +1,8 @@
 package com.conor.FantasyMap.controllers;
 
+import com.conor.FantasyMap.models.IPoint;
 import com.conor.FantasyMap.models.Location;
+import com.conor.FantasyMap.models.LogEntry;
 import lombok.AllArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -104,5 +106,16 @@ public class IntegrationTestHelper {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", AUTHORIZATION_HEADER);
         return headers;
+    }
+
+    public void givenPartyHasRested(int deltaHours) {
+        LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("deltaHours", String.valueOf(deltaHours));
+
+        HttpHeaders headers = httpHeadersWithAuthorization();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        restTemplate.postForObject(getBaseUri() + "/log-entries/rest", entity, Object.class);
     }
 }

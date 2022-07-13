@@ -159,7 +159,8 @@
         </form>
     </tool-panel>
     <log-panel id="log-panel">
-        <elapsed-time th:text="${travelLog.getElapsedTime()}"/>
+        <elapsed-time data-test-id="elapsed-time"
+                      th:text="${travelLog.getElapsedTime()}"/>
         <ul>
             <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"
                 data-test-id="travel-log-entry"

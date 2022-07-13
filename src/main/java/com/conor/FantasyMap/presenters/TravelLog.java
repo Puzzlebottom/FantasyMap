@@ -8,8 +8,7 @@ import org.hibernate.cfg.NotYetImplementedException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.conor.FantasyMap.models.LogEntryType.COURSE;
-import static com.conor.FantasyMap.models.LogEntryType.DESTINATION;
+import static com.conor.FantasyMap.models.LogEntryType.*;
 import static java.util.stream.Collectors.toList;
 
 @AllArgsConstructor
@@ -42,11 +41,14 @@ public class TravelLog {
     private String getFormattedEntry(LogEntry logEntry) {
         String courseFormat = "Party travelled %s for %s hours";
         String destinationFormat = "Party travelled %s hours toward %s";
+        String restFormat = "Party remained in place for %s hours";
 
         if (logEntry.getType() == COURSE) {
             return courseFormat.formatted(logEntry.getDirectionName(), logEntry.getDeltaHours());
         } else if (logEntry.getType() == DESTINATION) {
             return destinationFormat.formatted(logEntry.getDeltaHours(), logEntry.getDestination().getName());
+        } else if (logEntry.getType() == REST) {
+            return restFormat.formatted(logEntry.getDeltaHours());
         }
         throw new NotYetImplementedException();
     }

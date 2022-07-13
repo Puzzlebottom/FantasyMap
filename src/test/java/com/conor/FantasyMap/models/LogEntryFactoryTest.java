@@ -64,6 +64,7 @@ class LogEntryFactoryTest {
         location.setX(100);
         location.setY(100);
         location.setId(5L);
+
         LogEntry entry = LogEntryFactory.createLogEntryByDestination(new Point(0, 0), location, 100);
 
         assertThat(entry.getDeltaHours()).isEqualTo(100);
@@ -72,4 +73,13 @@ class LogEntryFactoryTest {
         assertThat(entry.getDestination().getId()).isEqualTo(location.getId());
     }
 
+    @Test
+    void createLogEntryForRestShouldCreateALogEntry() {
+        LogEntry entry = LogEntryFactory.createLogEntryForRest(1);
+
+        assertThat(entry.getDeltaHours()).isEqualTo(1);
+        assertThat(entry.getDeltaX()).isEqualTo(0);
+        assertThat(entry.getDeltaY()).isEqualTo(0);
+        assertThat(entry.getType()).isEqualTo(LogEntryType.REST);
+    }
 }
