@@ -45,4 +45,18 @@ public class LogEntryFactory {
         logEntry.setType(REST);
         return logEntry;
     }
+
+    public static LogEntry createLogEntryForTeleport(IPoint partyPosition, Location destination) {
+        LogEntry logEntry = new LogEntry();
+        double destinationX = destination.getX();
+        double destinationY = destination.getY();
+        double currentX = partyPosition.getX();
+        double currentY = partyPosition.getY();
+        logEntry.setDeltaHours(0);
+        logEntry.setDeltaX(destinationX - currentX);
+        logEntry.setDeltaY(destinationY + currentY);
+        logEntry.setDestination(destination);
+        logEntry.setType(TELEPORT);
+        return logEntry;
+    }
 }

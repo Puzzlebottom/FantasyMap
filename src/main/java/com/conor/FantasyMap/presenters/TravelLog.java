@@ -42,6 +42,7 @@ public class TravelLog {
         String courseFormat = "Party travelled %s for %s hours";
         String destinationFormat = "Party travelled %s hours toward %s";
         String restFormat = "Party remained in place for %s hours";
+        String teleportFormat = "Party teleported to %s";
 
         if (logEntry.getType() == COURSE) {
             return courseFormat.formatted(logEntry.getDirectionName(), logEntry.getDeltaHours());
@@ -49,6 +50,8 @@ public class TravelLog {
             return destinationFormat.formatted(logEntry.getDeltaHours(), logEntry.getDestination().getName());
         } else if (logEntry.getType() == REST) {
             return restFormat.formatted(logEntry.getDeltaHours());
+        } else if (logEntry.getType() == TELEPORT) {
+            return teleportFormat.formatted(logEntry.getDestination().getName());
         }
         throw new NotYetImplementedException();
     }
