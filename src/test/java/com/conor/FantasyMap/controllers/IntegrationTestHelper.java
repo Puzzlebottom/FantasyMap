@@ -31,13 +31,29 @@ public class IntegrationTestHelper {
         return "http://localhost:" + port;
     }
 
+    private static HttpEntity<LinkedMultiValueMap<String, String>> buildHttpEntity(LinkedMultiValueMap<String, String> body) {
+        HttpHeaders headers = httpHeadersWithAuthorization();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+        return entity;
+    }
+
+    public <TResult, TRequest> ResponseEntity<TResult> exchange(String uriFragment, HttpMethod httpMethod, TRequest request) {
+        HttpEntity<TRequest> requestEntity = new HttpEntity<>(request, httpHeadersWithAuthorization());
+        return restTemplate.exchange(getBaseUri() + uriFragment, httpMethod, requestEntity, new ParameterizedTypeReference<>() {});
+    }
+
+    private static HttpHeaders httpHeadersWithAuthorization() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", AUTHORIZATION_HEADER);
+        return headers;
+    }
+
     public void deleteLocation(String locationName) {
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("locationName", locationName);
 
-        HttpHeaders headers = httpHeadersWithAuthorization();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
 
         restTemplate.postForObject(getBaseUri() + "/locations/delete", entity, Object.class);
     }
@@ -47,9 +63,7 @@ public class IntegrationTestHelper {
         body.add("direction", direction);
         body.add("deltaHours", String.valueOf(deltaHours));
 
-        HttpHeaders headers = httpHeadersWithAuthorization();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/free", entity, Object.class);
     }
@@ -59,9 +73,7 @@ public class IntegrationTestHelper {
         body.add("destinationName", destination);
         body.add("deltaHours", String.valueOf(deltaHours));
 
-        HttpHeaders headers = httpHeadersWithAuthorization();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/destination", entity, Object.class);
     }
@@ -97,25 +109,21 @@ public class IntegrationTestHelper {
                 .collect(toList());
     }
 
-    public <TResult, TRequest> ResponseEntity<TResult> exchange(String uriFragment, HttpMethod httpMethod, TRequest request) {
-        HttpEntity<TRequest> requestEntity = new HttpEntity<>(request, httpHeadersWithAuthorization());
-        return restTemplate.exchange(getBaseUri() + uriFragment, httpMethod, requestEntity, new ParameterizedTypeReference<>() {});
-    }
-
-    private static HttpHeaders httpHeadersWithAuthorization() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", AUTHORIZATION_HEADER);
-        return headers;
-    }
-
     public void givenPartyHasRested(int deltaHours) {
         LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("deltaHours", String.valueOf(deltaHours));
 
-        HttpHeaders headers = httpHeadersWithAuthorization();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/rest", entity, Object.class);
+    }
+
+    public void givenPartyHasTeleported(String destinationName) {
+        LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("destinationName", destinationName);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
+
+        restTemplate.postForObject(getBaseUri() + "/log-entries/teleport", entity, Object.class);
     }
 }
