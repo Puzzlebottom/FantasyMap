@@ -115,6 +115,40 @@
             </label>
             <input class="go-button" type="submit" value="GO!"/>
         </form>
+        <hr/>
+        <form method="post" action="/log-entries/rest">
+            Rest in place for
+            <input class="text-field" type="text" name="deltaHours" required/>
+            hours
+            <input class="go-button" type="submit" value="REST"/>
+        </form>
+        <hr/>
+        <form method="post" action="/log-entries/fast-travel">
+            Fast travel to
+            <select name="destinationName">
+                <option th:each="destination: ${map.getPoints()}"
+                        th:value="${destination.getName()}"
+                        th:text="${destination.getName()}"
+                        th:selected="${destination.getName()==map.getCurrentDestinationName()}"
+                >
+                </option>
+            </select>
+            <input class="go-button" type="submit" value="FAST TRAVEL"/>
+        </form>
+        <hr/>
+        <form method="post" action="/log-entries/teleport">
+            Teleport to
+            <select name="destinationName">
+                <option th:each="destination: ${map.getPoints()}"
+                        th:value="${destination.getName()}"
+                        th:text="${destination.getName()}"
+                        th:selected="${destination.getName()==map.getCurrentDestinationName()}"
+                >
+                </option>
+            </select>
+            <input class="go-button" type="submit" value="TELEPORT"/>
+        </form>
+        <hr/>
         <form method="post" action="/log-entries/delete-top-entry">
             <input type="submit" value="UNDO MOVE">
         </form>
