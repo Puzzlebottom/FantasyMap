@@ -59,4 +59,20 @@ public class LogEntryFactory {
         logEntry.setType(TELEPORT);
         return logEntry;
     }
+
+    public static LogEntry createLogEntryForFastTravel(IPoint partyPosition, Location destination) {
+        LogEntry logEntry = new LogEntry();
+        IPoint destinationCoords = new Point(destination.getX(), destination.getY());
+        IPoint currentCoords = new Point(partyPosition.getX(), partyPosition.getY());
+        int distance = destinationCoords.calculateDistanceTo(currentCoords);
+        int hoursPerDay = 24;
+        int hoursOfTravelPerDay = 8;
+        int distancePerDay = SPEED_PER_HOUR * hoursOfTravelPerDay;
+        logEntry.setDeltaHours(distance / distancePerDay * hoursPerDay);
+        logEntry.setDeltaX(destination.getX() - partyPosition.getX());
+        logEntry.setDeltaY(destination.getY() + partyPosition.getY());
+        logEntry.setDestination(destination);
+        logEntry.setType(FAST_TRAVEL);
+        return logEntry;
+    }
 }

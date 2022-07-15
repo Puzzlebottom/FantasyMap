@@ -126,4 +126,13 @@ public class IntegrationTestHelper {
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/teleport", entity, Object.class);
     }
+
+    public void givenPartyHasFastTravelled(String destination) {
+        LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("destinationName", destination);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
+
+        restTemplate.postForObject(getBaseUri() + "/log-entries/fast-travel", entity, Object.class);
+    }
 }

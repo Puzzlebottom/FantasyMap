@@ -64,6 +64,18 @@ public class LogEntryController {
     }
 
     @Transactional
+    @PostMapping(path="/log-entries/fast-travel",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String fastTravelToDestination(FastTravelRequest request) {
+        Location destination = locationRepository.findLocationByName(request.getDestinationName());
+        List<LogEntry> logs = logEntryRepository.findAll();
+        Point partyPosition = LogEntry.sumPositionalDelta(logs);
+        LogEntry logEntry = LogEntryFactory.createLogEntryForFastTravel(partyPosition, destination);
+        logEntryRepository.save(logEntry);
+        return "redirect:/";
+    }
+
+    @Transactional
     @PostMapping(path="/log-entries/delete-top-entry")
     public String undoMove() {
         LogEntry topEntry = logEntryRepository.findFirstByOrderByIdDesc();

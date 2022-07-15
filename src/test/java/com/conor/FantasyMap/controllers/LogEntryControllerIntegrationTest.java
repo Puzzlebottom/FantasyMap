@@ -86,4 +86,35 @@ class LogEntryControllerIntegrationTest extends IntegrationTest {
         Document doc = testHelper.getDoc();
         assertThat(doc.body().text()).contains("Day 1, 12AM");
     }
+
+    @Test
+    void fastTravelToDestinationShouldMoveThePartyToDestination() throws IOException {
+        testHelper.givenALocationExists("Cathedral", -51, 51);
+        Document doc = testHelper.getDoc();
+        Element party = doc.getElementsByAttributeValue("data-test-id", "party-marker").get(0);
+        int initialX = Integer.parseInt(party.attr("x"));
+        int initialY = Integer.parseInt(party.attr("y"));
+
+        testHelper.givenPartyHasFastTravelled("Cathedral");
+
+        Document doc2 = testHelper.getDoc();
+        Element party2 = doc2.getElementsByAttributeValue("data-test-id", "party-marker").get(0);
+        int newX = Integer.parseInt(party2.attr("x"));
+        int newY = Integer.parseInt(party2.attr("y"));
+
+        assertThat(initialX).isNotEqualTo(newX);
+        assertThat(initialY).isNotEqualTo(newY);
+        assertThat(newX).isEqualTo(257);
+        assertThat(newY).isEqualTo(92);
+    }
+
+    @Test
+    void fastTravelToDestinationShouldAdvanceElapsedTime() throws IOException {
+        testHelper.givenALocationExists("Cathedral", 0, 72);
+
+        testHelper.givenPartyHasFastTravelled("Cathedral");
+
+        Document doc = testHelper.getDoc();
+        assertThat(doc.body().text()).contains("Day 4, 12AM");
+    }
 }

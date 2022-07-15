@@ -82,4 +82,34 @@ class LogEntryFactoryTest {
         assertThat(entry.getDeltaY()).isEqualTo(0);
         assertThat(entry.getType()).isEqualTo(LogEntryType.REST);
     }
+
+    @Test
+    void createLogEntryForTeleportShouldCreateALogEntry() {
+        IPoint partyPosition = new Point(0.0, 0.0);
+        Location destination = new Location();
+        destination.setX(7.0);
+        destination.setY(11.0);
+
+        LogEntry entry = LogEntryFactory.createLogEntryForTeleport(partyPosition, destination);
+
+        assertThat(entry.getDeltaHours()).isEqualTo(0);
+        assertThat(entry.getDeltaX()).isEqualTo(7);
+        assertThat(entry.getDeltaY()).isEqualTo(11);
+        assertThat(entry.getType()).isEqualTo(LogEntryType.TELEPORT);
+    }
+
+    @Test
+    void createLogEntryForFastTravelShouldCreateALogEntry() {
+        IPoint partyPosition = new Point(0.0, 0.0);
+        Location destination = new Location();
+        destination.setX(300.0);
+        destination.setY(400.0);
+
+        LogEntry entry = LogEntryFactory.createLogEntryForFastTravel(partyPosition, destination);
+
+        assertThat(entry.getDeltaHours()).isEqualTo(480);
+        assertThat(entry.getDeltaX()).isEqualTo(300);
+        assertThat(entry.getDeltaY()).isEqualTo(400);
+        assertThat(entry.getType()).isEqualTo(LogEntryType.FAST_TRAVEL);
+    }
 }
