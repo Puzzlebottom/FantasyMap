@@ -102,14 +102,26 @@ class LogEntryFactoryTest {
     void createLogEntryForFastTravelShouldCreateALogEntry() {
         IPoint partyPosition = new Point(0.0, 0.0);
         Location destination = new Location();
-        destination.setX(300.0);
-        destination.setY(400.0);
+        destination.setX(0.0);
+        destination.setY(480.0);
 
         LogEntry entry = LogEntryFactory.createLogEntryForFastTravel(partyPosition, destination);
 
         assertThat(entry.getDeltaHours()).isEqualTo(480);
-        assertThat(entry.getDeltaX()).isEqualTo(300);
-        assertThat(entry.getDeltaY()).isEqualTo(400);
+        assertThat(entry.getDeltaX()).isEqualTo(0);
+        assertThat(entry.getDeltaY()).isEqualTo(480);
         assertThat(entry.getType()).isEqualTo(LogEntryType.FAST_TRAVEL);
+    }
+
+    @Test
+    void createLogEntryForFastTravelShouldHandlePartialDaysOfTravel() {
+        IPoint partyPosition = new Point(0.0, 0.0);
+        Location destination = new Location();
+        destination.setX(2.0);
+        destination.setY(2.0);
+
+        LogEntry entry = LogEntryFactory.createLogEntryForFastTravel(partyPosition, destination);
+
+        assertThat(entry.getDeltaHours()).isEqualTo(1);
     }
 }

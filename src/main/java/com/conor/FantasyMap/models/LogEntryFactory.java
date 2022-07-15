@@ -64,15 +64,22 @@ public class LogEntryFactory {
         LogEntry logEntry = new LogEntry();
         IPoint destinationCoords = new Point(destination.getX(), destination.getY());
         IPoint currentCoords = new Point(partyPosition.getX(), partyPosition.getY());
-        int distance = destinationCoords.calculateDistanceTo(currentCoords);
-        int hoursPerDay = 24;
-        int hoursOfTravelPerDay = 8;
-        int distancePerDay = SPEED_PER_HOUR * hoursOfTravelPerDay;
-        logEntry.setDeltaHours(distance / distancePerDay * hoursPerDay);
+        int distance = currentCoords.calculateDistanceTo(destinationCoords);
+        logEntry.setDeltaHours(calculateFastTravelTimes(distance));
         logEntry.setDeltaX(destination.getX() - partyPosition.getX());
-        logEntry.setDeltaY(destination.getY() + partyPosition.getY());
+        logEntry.setDeltaY(destination.getY() - partyPosition.getY());
         logEntry.setDestination(destination);
         logEntry.setType(FAST_TRAVEL);
         return logEntry;
+    }
+
+    private static int calculateFastTravelTimes(int distance) {
+        float hoursPerDay = 24;
+        float hoursOfTravelPerDay = 8;
+        float distancePerDay = SPEED_PER_HOUR * hoursOfTravelPerDay;
+        if((float) distance <= distancePerDay) {
+            return (int) (hoursOfTravelPerDay * ((float) distance / distancePerDay));
+        }
+        return (int) ((distance / distancePerDay * hoursPerDay) + (distance % distancePerDay));
     }
 }
