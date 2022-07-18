@@ -6,6 +6,7 @@ import com.conor.FantasyMap.models.LogEntryFactory;
 import lombok.AllArgsConstructor;
 import org.hibernate.cfg.NotYetImplementedException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class TravelLog {
 
     public List<String> getFormattedTravelLog() {
         return logEntries.stream()
+                .sorted(Comparator.comparing(LogEntry::getId))
                 .map(this::getFormattedEntry)
                 .collect(toList());
     }

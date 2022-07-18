@@ -55,7 +55,7 @@ public class LocationController {
     @Transactional
     @PostMapping(path="/locations/delete",
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-    public String deleteLocation(DeleteLocationRequest request) throws Exception {
+    public String deleteLocation(DeleteLocationRequest request) {
         String locationName = request.getLocationName();
         Location location = locationRepository.findLocationByName(locationName);
         try {
