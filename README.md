@@ -13,9 +13,15 @@ Early in development it was decided that the app should remain pure java in orde
 A secondary ambition was to use Test Driven Development throughout the project.  As a result a fairly robust suite of both unit and integration tests are included.
 ## Getting Started
 
-The following steps will run this project locally.
+### Requirements
+
+* Java v 17
+* Docker v 3.3.1
+
 
 ### Installation
+The following steps will run this project locally.
+
 
 1. Clone the repo
    ```sh
@@ -39,7 +45,7 @@ The following steps will run this project locally.
 
 Every adventure starts somewhere; the party will initially be located at the origin "Bastion".
 
-All new locations are plotted relative to an existing one.  Assign a unique name, along with distance & direction from any of your locations to create new location.
+All new locations are plotted relative to an existing one.  Assign a unique name, along with distance & direction from any of your locations to create new locations.
 
 Party movement can be controlled by selecting a destination from among your existing locations. Input the travel time in hours and hit GO! The party marker will be moved on a straight line path toward the destination.
 
