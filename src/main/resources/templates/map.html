@@ -22,42 +22,14 @@
 <body>
 <svg xmlns='http://www.w3.org/2000/svg' th:width="${map.WIDTH}" th:height="${map.HEIGHT}">
     <rect x="0" y="0" th:width="${map.WIDTH}" th:height="${map.HEIGHT}" stroke="black" fill="black" stroke-width="2"/>
-    <defs>
-        <filter id="squiggle">
-            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".1" numOctaves="4"></feTurbulence>
-            <feDisplacementMap id="displacement" in="SourceGraphic" scale="80"></feDisplacementMap>
-        </filter>
-
-        <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
-        </filter>
-    </defs>
+    <defs th:replace="fragments/fog-of-war :: filters"></defs>
     <g filter="url(#squiggle) url(#blur)">
         <rect x="0" y="0" th:width="${map.WIDTH}" th:height="${map.HEIGHT}" fill="transparent"/>
-        <polygon th:points="${map.getFogOfWarPolygonPoints()}"
-                 stroke="#333"
-                 stroke-width="225"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 fill="#333"/>
-        <polygon th:points="${map.getFogOfWarPolygonPoints()}"
-                 stroke="#777"
-                 stroke-width="175"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 fill="#777"/>
-        <polygon th:points="${map.getFogOfWarPolygonPoints()}"
-                 stroke="#aaa"
-                 stroke-width="125"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 fill="#aaa"/>
-        <polygon th:points="${map.getFogOfWarPolygonPoints()}"
-                 stroke="#ddd"
-                 stroke-width="75"
-                 stroke-linecap="round"
-                 stroke-linejoin="round"
-                 fill="#ddd"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#333', width='225')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#777', width='175')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#aaa', width='125')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#ddd', width='75')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#fff', width='25')"/>
     </g>
     <g th:replace="fragments/marker :: marker"></g>
     <g th:replace="fragments/party :: party"></g>
@@ -66,7 +38,7 @@
 <panel-wrapper>
     <ul>
         <li>
-            <a href="#" class="tab-button" data-panel="new-location-panel">New Location</a>
+            <a href="#" class="tab-button" data-panel="location-tools-panel">New Location</a>
         </li>
         <li>
             <a href="#" class="tab-button" data-panel="movement-panel">Movement</a>
@@ -75,132 +47,9 @@
             <a href="#" class="tab-button" data-panel="log-panel">Travel Log</a>
         </li>
     </ul>
-    <movement-panel id="movement-panel">
-        <form method="post" action="/log-entries/destination">
-            DESTINATION
-            <select name="destinationName">
-                <option th:each="destination: ${map.getPoints()}"
-                        th:value="${destination.getName()}"
-                        th:text="${destination.getName()}"
-                        th:selected="${destination.getName()==map.getCurrentDestinationName()}"
-                        data-test-id="destination"
-                >
-                </option>
-            </select>
-            <br>
-            <label>
-                Move
-                <input class="text-field" type="text" name="deltaHours" required/>
-                hours toward destination
-            </label>
-            <input class="go-button" type="submit" value="GO!"/>
-        </form>
-        <hr/>
-        <form method="post" action="/log-entries/free">
-            Move
-            <select name="direction">
-                <option value="N">North</option>
-                <option value="NE">North-East</option>
-                <option value="E">East</option>
-                <option value="SE">South-East</option>
-                <option value="S">South</option>
-                <option value="SW">South-West</option>
-                <option value="W">West</option>
-                <option value="NW">North-West</option>
-            </select>
-            <label>
-                for
-                <input class="text-field" type="text" name="deltaHours" required/>
-                hours
-            </label>
-            <input class="go-button" type="submit" value="GO!"/>
-        </form>
-        <hr/>
-        <form method="post" action="/log-entries/rest">
-            Rest in place for
-            <input class="text-field" type="text" name="deltaHours" required/>
-            hours
-            <input class="go-button" type="submit" value="REST"/>
-        </form>
-        <hr/>
-        <form method="post" action="/log-entries/fast-travel">
-            Fast travel to
-            <select name="destinationName">
-                <option th:each="destination: ${map.getPoints()}"
-                        th:value="${destination.getName()}"
-                        th:text="${destination.getName()}"
-                        th:selected="${destination.getName()==map.getCurrentDestinationName()}"
-                >
-                </option>
-            </select>
-            <input class="go-button" type="submit" value="FAST TRAVEL"/>
-        </form>
-        <hr/>
-        <form method="post" action="/log-entries/teleport">
-            Teleport to
-            <select name="destinationName">
-                <option th:each="destination: ${map.getPoints()}"
-                        th:value="${destination.getName()}"
-                        th:text="${destination.getName()}"
-                        th:selected="${destination.getName()==map.getCurrentDestinationName()}"
-                >
-                </option>
-            </select>
-            <input class="go-button" type="submit" value="TELEPORT"/>
-        </form>
-        <hr/>
-        <form method="post" action="/log-entries/delete-top-entry">
-            <input type="submit" value="UNDO MOVE">
-        </form>
-    </movement-panel>
-    <tool-panel id="new-location-panel">
-        Create New Location
-        <form method="post" action="/locations/relative">
-            <input type="text" name="newLocationName" required>
-            is
-            <input class="text-field" type="text" name="distance" required/>
-            miles
-            <select name="direction">
-                <option value="N">North</option>
-                <option value="NE">North-East</option>
-                <option value="E">East</option>
-                <option value="SE">South-East</option>
-                <option value="S">South</option>
-                <option value="SW">South-West</option>
-                <option value="W">West</option>
-                <option value="NW">North-West</option>
-            </select>
-            <br>
-            from
-            <select name="origin">
-                <option th:each="origin: ${map.getPoints()}"
-                        th:value="${origin.getName()}"
-                        th:text="${origin.getName()}">
-                </option>
-            </select>
-            <input type="submit" value="ADD LOCATION">
-        </form>
-        <form method="post" action="/locations/delete">
-            <select name="locationName">
-                <option th:each="location: ${map.getPoints()}"
-                        th:value="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
-                        th:text="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
-                        th:style="${location.getName() == map.getOrigin().getName()} ? 'display:none'"
-                >
-                </option>
-            </select>
-            <input type="submit" value="DELETE LOCATION">
-        </form>
-    </tool-panel>
-    <log-panel id="log-panel">
-        <elapsed-time data-test-id="elapsed-time"
-                      th:text="${travelLog.getElapsedTime()}"/>
-        <ul>
-            <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"
-                data-test-id="travel-log-entry"
-            ></li>
-        </ul>
-    </log-panel>
+    <tool-panel th:replace="fragments/movement-panel :: movement-panel"></tool-panel>
+    <tool-panel th:replace="fragments/location-tools-panel :: location-tools-panel"></tool-panel>
+    <tool-panel th:replace="fragments/log-panel :: log-panel"></tool-panel>
 </panel-wrapper>
 </body>
 </html>

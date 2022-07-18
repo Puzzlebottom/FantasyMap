@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <defs th:fragment="filters">
+        <filter id="squiggle">
+            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".1" numOctaves="4"></feTurbulence>
+            <feDisplacementMap id="displacement" in="SourceGraphic" scale="80"></feDisplacementMap>
+        </filter>
+        <filter id="blur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+        </filter>
+    </defs>
+    <polygon th:fragment="convex-hull (colour, width)"
+             th:points="${map.getFogOfWarPolygonPoints()}"
+             th:stroke="${colour}"
+             th:stroke-width="${width}"
+             stroke-linecap="round"
+             stroke-linejoin="round"
+             th:fill="${colour}"/>
+</body>
+</html>

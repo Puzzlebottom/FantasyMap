@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <tool-panel   id="location-tools-panel" th:fragment="location-tools-panel">
+        Create New Location
+        <form method="post" action="/locations/relative">
+            <input type="text" name="newLocationName" required>
+            is
+            <input class="text-field" type="text" name="distance" required/>
+            miles
+            <select name="direction">
+                <option value="N">North</option>
+                <option value="NE">North-East</option>
+                <option value="E">East</option>
+                <option value="SE">South-East</option>
+                <option value="S">South</option>
+                <option value="SW">South-West</option>
+                <option value="W">West</option>
+                <option value="NW">North-West</option>
+            </select>
+            <br>
+            from
+            <select name="origin">
+                <option th:each="origin: ${map.getPoints()}"
+                        th:value="${origin.getName()}"
+                        th:text="${origin.getName()}">
+                </option>
+            </select>
+            <input type="submit" value="ADD LOCATION">
+        </form>
+        <form method="post" action="/locations/delete">
+            <select name="locationName">
+                <option th:each="location: ${map.getPoints()}"
+                        th:value="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
+                        th:text="${location.getName() != map.getOrigin().getName()} ? ${location.getName()}"
+                        th:style="${location.getName() == map.getOrigin().getName()} ? 'display:none'"
+                >
+                </option>
+            </select>
+            <input type="submit" value="DELETE LOCATION">
+        </form>
+    </tool-panel>
+</body>
+</html>

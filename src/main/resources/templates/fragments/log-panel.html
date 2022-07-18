@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <log-panel id="log-panel" th:fragment="log-panel">
+        <elapsed-time data-test-id="elapsed-time"
+                      th:text="${travelLog.getElapsedTime()}"/>
+        <ul>
+            <li th:each="movement: ${travelLog.getFormattedTravelLog()}" th:text="${movement}"
+                data-test-id="travel-log-entry"
+            ></li>
+        </ul>
+    </log-panel>
+</body>
+</html>
