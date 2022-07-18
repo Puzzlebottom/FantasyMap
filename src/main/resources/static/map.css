@@ -75,6 +75,21 @@ elapsed-time{
     93.75%{transform: scale(0.98,1)}
     100%{transform: scale(1,1)}
 }
+.fog-of-war{
+    animation: fog-of-war 400ms infinite alternate linear;
+}
+@keyframes fog-of-war {
+    0%{filter: url(#squiggle0) url(#blur);}
+    33%{filter: url(#squiggle1) url(#blur);}
+    66%{filter: url(#squiggle2) url(#blur);}
+    100%{filter: url(#squiggle3) url(#blur);}
+}
+/*@keyframes fog-of-war {*/
+/*    0%{filter: url(#squiggle0);}*/
+/*    25%{filter: url(#squiggle1);}*/
+/*    50%{filter: url(#squiggle2);}*/
+/*    75%{filter: url(#squiggle3);}*/
+/*}*/
 .origin-label{
     font-size: larger;
     font-weight: bold;

@@ -23,12 +23,12 @@
 <svg xmlns='http://www.w3.org/2000/svg' th:width="${map.WIDTH}" th:height="${map.HEIGHT}">
     <rect x="0" y="0" th:width="${map.WIDTH}" th:height="${map.HEIGHT}" stroke="black" fill="black" stroke-width="2"/>
     <defs th:replace="fragments/fog-of-war :: filters"></defs>
-    <g filter="url(#squiggle) url(#blur)">
+    <g class="fog-of-war">
         <rect x="0" y="0" th:width="${map.WIDTH}" th:height="${map.HEIGHT}" fill="transparent"/>
-        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#333', width='225')"/>
-        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#777', width='175')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#222', width='225')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#666', width='175')"/>
         <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#aaa', width='125')"/>
-        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#ddd', width='75')"/>
+        <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#eee', width='75')"/>
         <polygon th:replace="fragments/fog-of-war :: convex-hull(colour='#fff', width='25')"/>
     </g>
     <g th:replace="fragments/marker :: marker"></g>

@@ -2,12 +2,24 @@
 <html lang="en">
 <body>
     <defs th:fragment="filters">
-        <filter id="squiggle">
-            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".1" numOctaves="4"></feTurbulence>
-            <feDisplacementMap id="displacement" in="SourceGraphic" scale="80"></feDisplacementMap>
+        <filter id="squiggle0">
+            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".9" numOctaves="3" seed="1"></feTurbulence>
+            <feDisplacementMap id="displacement" in="SourceGraphic" scale="240"></feDisplacementMap>
+        </filter>
+        <filter id="squiggle1">
+            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".8" numOctaves="3" seed="2"></feTurbulence>
+            <feDisplacementMap id="displacement" in="SourceGraphic" scale="255"></feDisplacementMap>
+        </filter>
+        <filter id="squiggle2">
+            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".7" numOctaves="3" seed="3"></feTurbulence>
+            <feDisplacementMap id="displacement" in="SourceGraphic" scale="270"></feDisplacementMap>
+        </filter>
+        <filter id="squiggle3">
+            <feTurbulence type="fractalNoise" id="turbulence" baseFrequency=".6" numOctaves="3" seed="4"></feTurbulence>
+            <feDisplacementMap id="displacement" in="SourceGraphic" scale="285"></feDisplacementMap>
         </filter>
         <filter id="blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="10"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="75"/>
         </filter>
     </defs>
     <polygon th:fragment="convex-hull (colour, width)"
