@@ -49,8 +49,8 @@
             <input class="go-button" type="submit" value="REST"/>
         </form>
         <hr/>
-        <form method="post" action="/log-entries/fast-travel">
-            Fast travel to
+        <form method="post" action="/log-entries/teleport">
+            Teleport to
             <select name="destinationName">
                 <option th:each="destination: ${map.getPoints()}"
                         th:value="${destination.getName()}"
@@ -59,7 +59,7 @@
                 >
                 </option>
             </select>
-            <input class="go-button" type="submit" value="FAST TRAVEL"/>
+            <input class="go-button" type="submit" value="TELEPORT"/>
         </form>
         <hr/>
         <form method="post" action="/log-entries/fast-travel">

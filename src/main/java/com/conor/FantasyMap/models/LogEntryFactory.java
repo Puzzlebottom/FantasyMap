@@ -54,7 +54,7 @@ public class LogEntryFactory {
         double currentY = partyPosition.getY();
         logEntry.setDeltaHours(0);
         logEntry.setDeltaX(destinationX - currentX);
-        logEntry.setDeltaY(destinationY + currentY);
+        logEntry.setDeltaY(destinationY - currentY);
         logEntry.setDestination(destination);
         logEntry.setType(TELEPORT);
         return logEntry;
