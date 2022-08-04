@@ -110,6 +110,30 @@ class LocationControllerTest {
     }
 
     @Test
+    void addLocationAtPartyPositionShouldCreateOriginLocationIfNoLocationsExist() {
+        NewLocationRequest request = new NewLocationRequest();
+        request.setNewLocationName("Bastion");
+
+        locationController.addLocationAtPartyPosition(request);
+
+        verify(locationRepository).save(locationCaptor.capture());
+        assertThat(locationCaptor.getValue().isOrigin()).isTrue();
+    }
+
+    @Test
+    void addLocationAtPartyPositionShouldCreateNonOriginLocationIfOtherLocationsExist() {
+        NewLocationRequest request = new NewLocationRequest();
+        request.setNewLocationName("Bastion");
+        Location existingLocation = mock(Location.class);
+        when(locationRepository.findAll()).thenReturn(List.of(existingLocation));
+
+        locationController.addLocationAtPartyPosition(request);
+
+        verify(locationRepository).save(locationCaptor.capture());
+        assertThat(locationCaptor.getValue().isOrigin()).isFalse();
+    }
+
+    @Test
     void setCurrentDestinationShouldSetOneLocationAsCurrentDestination() {
         Location oldDestination = new Location();
         Location newDestination = new Location();

@@ -113,6 +113,9 @@ public class LocationController {
         newLocation.setName(request.getNewLocationName());
         newLocation.setX(partyPosition.getX());
         newLocation.setY(partyPosition.getY());
+        if(locationRepository.findAll().size() > 0) {
+            newLocation.setOrigin(false);
+        }
         locationRepository.save(newLocation);
         return "redirect:/";
     }
