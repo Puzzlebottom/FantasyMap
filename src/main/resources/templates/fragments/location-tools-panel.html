@@ -28,6 +28,11 @@
             </select>
             <input type="submit" value="ADD LOCATION">
         </form>
+        Create Location At Party Position
+        <form method="post" action="/locations/party">
+            <input type="text" name="newLocationName" required>
+            <input type="submit" value="ADD LOCATION">
+        </form>
         <form method="post" action="/locations/delete">
             <select name="locationName">
                 <option th:each="location: ${map.getPoints()}"
