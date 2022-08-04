@@ -134,38 +134,6 @@ class LocationControllerTest {
     }
 
     @Test
-    void setCurrentDestinationShouldSetOneLocationAsCurrentDestination() {
-        Location oldDestination = new Location();
-        Location newDestination = new Location();
-        oldDestination.setDestination(true);
-        when(locationRepository.findLocationByIsDestinationIsTrue()).thenReturn(oldDestination);
-        when(locationRepository.findLocationByName("newDestination")).thenReturn(newDestination);
-
-        locationController.setCurrentDestination("newDestination");
-
-        verify(locationRepository, times(2)).save(locationCaptor.capture());
-
-        List<Location> allLocations = locationCaptor.getAllValues();
-        assertThat(allLocations.get(0).isDestination()).isEqualTo(false);
-        assertThat(allLocations.get(1).isDestination()).isEqualTo(true);
-    }
-
-    @Test
-    void setCurrentDestinationShouldWorkWhenNoPriorDestinationHasBeenSet() {
-        Location newDestination = new Location();
-        when(locationRepository.findLocationByIsDestinationIsTrue()).thenReturn(null);
-        when(locationRepository.findLocationByName("newDestination")).thenReturn(newDestination);
-
-        locationController.setCurrentDestination("newDestination");
-
-        verify(locationRepository).save(locationCaptor.capture());
-
-        List<Location> allLocations = locationCaptor.getAllValues();
-        assertThat(allLocations.size()).isEqualTo(1);
-        assertThat(allLocations.get(0).isDestination()).isEqualTo(true);
-    }
-
-    @Test
     void deleteLocationShouldNotDeleteOrigin() throws Exception {
         Location origin = new Location();
         origin.setName("Bastion");

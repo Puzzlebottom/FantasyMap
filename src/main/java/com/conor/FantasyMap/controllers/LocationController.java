@@ -129,19 +129,5 @@ public class LocationController {
         locationRepository.save(location);
         return ResponseEntity.ok().build();
     }
-
-    @Transactional
-    @PutMapping("/locations/{name}/destination")
-    public ResponseEntity<Object> setCurrentDestination(@PathVariable String name) {
-        Location previousDestination = locationRepository.findLocationByIsDestinationIsTrue();
-        Location currentDestination = locationRepository.findLocationByName(name);
-        if(previousDestination != null) {
-            previousDestination.setDestination(false);
-            locationRepository.save(previousDestination);
-        };
-        currentDestination.setDestination(true);
-        locationRepository.save(currentDestination);
-        return ResponseEntity.ok().build();
-    }
 }
 
