@@ -15,8 +15,12 @@ panel-wrapper{
     flex-direction: column;
     flex: 1 1 0;
     height: 600px;
-    width: available;
-    min-width: fit-content;
+    width: 300px;
+
+}
+tab-button-wrapper{
+    display: flex;
+    flex-direction: row;
 }
 movement-panel{
     border: thin solid black;
@@ -37,6 +41,17 @@ log-panel{
     flex: 1 1 0;
     overflow: scroll;
     margin: 8px 8px 0;
+}
+details-panel{
+    border: thin solid black;
+    display: none;
+    flex-direction: column;
+    margin: 0 8px;
+}
+.location-details{
+    display: none;
+    flex-direction: column;
+    align-content: center;
 }
 form{
     margin: 4px;
@@ -93,4 +108,18 @@ elapsed-time{
 .origin-label{
     font-size: larger;
     font-weight: bold;
+}
+textarea{
+    height: fit-content;
+    max-height: available;
+    width: available;
+    border: none;
+    outline: none;
+    resize: none;
+    margin: 8px;
+}
+
+.detail-button-wrapper{
+    max-height: 50px;
+    overflow: scroll;
 }

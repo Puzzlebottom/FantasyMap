@@ -15,6 +15,16 @@
             .map((el) => el.style.display = "none");
           document.getElementById(e.target.dataset.panel).style.display = "block";
           window.localStorage.setItem("panel", e.target.dataset.panel);
+        }));
+        const storedDetail = window.localStorage.getItem("detail");
+        if(storedDetail != null) {document.getElementById(storedDetail).style.display = "flex"};
+        [...document.getElementsByClassName("details-button")].map((el) => el.addEventListener("click", (e) => {
+          e.preventDefault();
+          const detail = [...document.getElementsByClassName("details-button")].map((el) => el.dataset.detail);
+          detail.map((id) => document.getElementById(id))
+            .map((el) => el.style.display = "none");
+          document.getElementById(e.target.dataset.detail).style.display = "flex";
+          window.localStorage.setItem("detail", e.target.dataset.detail);
         }))
       })
     </script>
@@ -36,20 +46,12 @@
     <g th:replace="fragments/label :: label"></g>
 </svg>
 <panel-wrapper>
-    <ul>
-        <li>
-            <a href="#" class="tab-button" data-panel="location-tools-panel">New Location</a>
-        </li>
-        <li>
-            <a href="#" class="tab-button" data-panel="movement-panel">Movement</a>
-        </li>
-        <li>
-            <a href="#" class="tab-button" data-panel="log-panel">Travel Log</a>
-        </li>
-        <li>
-            <a href="#" class="tab-button" data-panel="location-details-panel">Details</a>
-        </li>
-    </ul>
+    <div class="tab-button-wrapper">
+        <button class="tab-button" data-panel="location-details-panel">DETAILS</button>
+        <button class="tab-button" data-panel="movement-panel">MOVEMENT</button>
+        <button class="tab-button" data-panel="log-panel">LOG</button>
+        <button class="tab-button" data-panel="location-tools-panel">TOOLS</button>
+    </div>
     <tool-panel th:replace="fragments/movement-panel :: movement-panel"></tool-panel>
     <tool-panel th:replace="fragments/location-tools-panel :: location-tools-panel"></tool-panel>
     <tool-panel th:replace="fragments/log-panel :: log-panel"></tool-panel>

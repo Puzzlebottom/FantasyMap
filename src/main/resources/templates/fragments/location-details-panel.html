@@ -2,13 +2,27 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
     <details-panel id="location-details-panel" th:fragment="location-details-panel">
+        <div class="detail-button-wrapper">
+            <th:block th:each="location: ${#lists.sort(locations, byId)}">
+                <button th:attr="data-detail=${location.getName()}"
+                        th:text="${location.getName()}"
+                        class="details-button">
+                </button>
+            </th:block>
+        </div>
         <th:block th:each="location: ${#lists.sort(locations, byId)}">
-            <p th:text="${location.getName()}"></p>
-            <form data-test-id="location-info-form" method="post" th:action="@{/locations/{name}/info(name=${location.getName()})}">
-                <input type="hidden" data-test-id="location-info-form-name" name="name" th:value="${location.getName()}">
-                <textarea data-test-id="location-info-form-info" name="info" th:text="${location.getInfo()}"></textarea>
-                <input type="submit" value="UPDATE INFO">
-            </form>
+            <div class="location-details"
+                 th:id="${location.getName()}">
+                <h3 th:text="${location.getName()}"></h3>
+                <form data-test-id="location-info-form"
+                      method="post"
+                      th:action="@{/locations/{name}/info(name=${location.getName()})}">
+                    <input type="hidden" data-test-id="location-info-form-name" name="name" th:value="${location.getName()}">
+                    <textarea data-test-id="location-info-form-info" name="info" th:text="${location.getInfo()}"></textarea>
+                    <br/>
+                    <input type="submit" value="SAVE">
+                </form>
+            </div>
         </th:block>
     </details-panel>
 </body>
