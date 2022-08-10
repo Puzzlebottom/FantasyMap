@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-info-field-to-location
+      author: conor
+      changes:
+        - addColumn:
+            tableName: location
+            columns:
+              - column:
+                  name: info
+                  type: text

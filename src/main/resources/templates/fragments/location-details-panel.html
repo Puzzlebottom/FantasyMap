@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <details-panel id="location-details-panel" th:fragment="location-details-panel">
+        <th:block th:each="location: ${#lists.sort(locations, byId)}">
+            <p th:text="${location.getName()}"></p>
+            <form data-test-id="location-info-form" method="post" th:action="@{/locations/{name}/info(name=${location.getName()})}">
+                <input type="hidden" data-test-id="location-info-form-name" name="name" th:value="${location.getName()}">
+                <textarea data-test-id="location-info-form-info" name="info" th:text="${location.getInfo()}"></textarea>
+                <input type="submit" value="UPDATE INFO">
+            </form>
+        </th:block>
+    </details-panel>
+</body>
+</html>

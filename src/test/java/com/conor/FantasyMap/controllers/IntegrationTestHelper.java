@@ -135,4 +135,14 @@ public class IntegrationTestHelper {
 
         restTemplate.postForObject(getBaseUri() + "/log-entries/fast-travel", entity, Object.class);
     }
+
+    public void givenInfoHasBeenUpdated(String locationName, String newInfo) {
+        LinkedMultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("name", locationName);
+        body.add("info", newInfo);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> entity = buildHttpEntity(body);
+
+        restTemplate.postForObject(getBaseUri() + "/locations/" + locationName + "/info", entity, Object.class);
+    }
 }

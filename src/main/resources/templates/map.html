@@ -46,10 +46,14 @@
         <li>
             <a href="#" class="tab-button" data-panel="log-panel">Travel Log</a>
         </li>
+        <li>
+            <a href="#" class="tab-button" data-panel="location-details-panel">Details</a>
+        </li>
     </ul>
     <tool-panel th:replace="fragments/movement-panel :: movement-panel"></tool-panel>
     <tool-panel th:replace="fragments/location-tools-panel :: location-tools-panel"></tool-panel>
     <tool-panel th:replace="fragments/log-panel :: log-panel"></tool-panel>
+    <tool-panel th:replace="fragments/location-details-panel :: location-details-panel"></tool-panel>
 </panel-wrapper>
 </body>
 </html>

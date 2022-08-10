@@ -12,6 +12,5 @@ public class FantasyMapApplication {
 
 }
 
-//TODO: Readme
-//TODO: implement new marker graphics and distinguish origin, destination
+//TODO: fix illegal html tags
 

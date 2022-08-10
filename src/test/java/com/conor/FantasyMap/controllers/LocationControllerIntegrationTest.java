@@ -16,19 +16,6 @@ import static org.springframework.http.HttpMethod.POST;
 public class LocationControllerIntegrationTest extends IntegrationTest {
 
     @Test
-    void shouldUpdateInfoForALocation() {
-        testHelper.givenALocationExists("Bastion");
-
-        testHelper.exchange("/locations/Bastion/info", POST,
-                "banana");
-        ResponseEntity<Map<String, Object>> result = testHelper.exchange("/locations/Bastion", GET,
-                null);
-        List<String> testInfo = (List<String>) result.getBody().get("info");
-
-        assertThat(testInfo).contains("banana");
-    }
-
-    @Test
     void shouldRenderLocationsOnMap() throws IOException {
         testHelper.givenALocationExists("Bastion");
         testHelper.givenALocationExists("Cathedral", -12, 20);
@@ -80,5 +67,23 @@ public class LocationControllerIntegrationTest extends IntegrationTest {
         Elements entries2 = doc2.getElementsByAttributeValue("data-test-id", "travel-log-entry");
 
         assertThat(entries2.get(0).text()).isEqualTo("Party travelled east for 8 hours");
+    }
+
+    @Test
+    void shouldDisplayDetailsFormForEachLocation() throws IOException {
+        testHelper.givenALocationExists("Bastion");
+        testHelper.givenALocationExists("Cathedral");
+        testHelper.givenInfoHasBeenUpdated("Bastion", "is a city");
+
+        Document doc = testHelper.getDoc();
+        Elements forms = doc.getElementsByAttributeValue("data-test-id", "location-info-form");
+        Elements nameInputs = doc.getElementsByAttributeValue("data-test-id", "location-info-form-name");
+        Elements infoInputs = doc.getElementsByAttributeValue("data-test-id", "location-info-form-info");
+
+        assertThat(forms.size()).isEqualTo(2);
+        assertThat(nameInputs.get(0).attr("name")).isEqualTo("name");
+        assertThat(nameInputs.get(0).attr("value")).isEqualTo("Bastion");
+        assertThat(infoInputs.get(0).attr("name")).isEqualTo("info");
+        assertThat(infoInputs.get(0).text()).isEqualTo("is a city");
     }
 }

@@ -47,13 +47,15 @@ class LocationControllerTest {
     @Test
     void addLocationInfoShouldDoSo() {
         Location location = new Location();
-        location.setInfo(Collections.emptyList());
         when(locationRepository.findLocationByName("Bastion")).thenReturn(location);
+        UpdateInfoRequest request = new UpdateInfoRequest();
+        request.setName("Bastion");
+        request.setInfo("Bastion is a city");
 
-        locationController.addLocationInfo("Bastion", "Bastion is a city");
+        locationController.addLocationInfo(request);
 
         verify(locationRepository).save(locationCaptor.capture());
-        assertThat(locationCaptor.getValue().getInfo()).contains("Bastion is a city");
+        assertThat(locationCaptor.getValue().getInfo()).isEqualTo("Bastion is a city");
     }
 
     @Test

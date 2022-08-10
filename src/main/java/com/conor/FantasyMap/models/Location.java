@@ -18,8 +18,7 @@ import static java.util.stream.Stream.concat;
 public class Location implements IPoint {
     @Column(unique=true)
     private String name;
-    @ElementCollection
-    private List<String> info;
+    private String info;
     private double x;
     private double y;
     @Id
@@ -37,9 +36,7 @@ public class Location implements IPoint {
     }
 
     public void updateInfo(String newInfo) {
-        List<String> info = this.getInfo();
-        List<String> newList = concat(info.stream(), Stream.of(newInfo)).collect(toList());
-        this.setInfo(newList);
+        this.setInfo(newInfo);
     }
 
     @Override

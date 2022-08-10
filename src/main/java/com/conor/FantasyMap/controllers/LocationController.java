@@ -15,10 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -33,8 +31,10 @@ public class LocationController {
         List<LogEntry> logEntries = logEntryRepository.findAll();
         Map map = new Map(locations, logEntries);
         model.addAttribute("map", map);
+        model.addAttribute("locations", locations);
         TravelLog travelLog = new TravelLog(logEntries);
         model.addAttribute("travelLog", travelLog);
+        model.addAttribute("byId", Comparator.comparing(Location::getId));
         return "map";
     }
 
@@ -121,13 +121,13 @@ public class LocationController {
     }
 
     @Transactional
-    @PostMapping("/locations/{name}/info")
-    @ResponseBody
-    public ResponseEntity<Object> addLocationInfo(@PathVariable String name, @RequestBody String info) {
-        Location location = locationRepository.findLocationByName(name);
-        location.updateInfo(info);
+    @PostMapping(path="/locations/{name}/info",
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    public String addLocationInfo(UpdateInfoRequest request) {
+        Location location = locationRepository.findLocationByName(request.getName());
+        location.updateInfo(request.getInfo());
         locationRepository.save(location);
-        return ResponseEntity.ok().build();
+        return "redirect:/";
     }
 }
 
